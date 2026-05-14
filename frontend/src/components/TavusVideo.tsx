@@ -48,7 +48,10 @@ export default function TavusVideo({ summary, riskScore, conditions, specialist,
         setStatus('connecting');
         setErrorMsg('');
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            if (apiUrl && !apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
+                apiUrl = 'http://' + apiUrl;
+            }
 
             const response = await fetch(`${apiUrl}/api/tavus-conversation`, {
                 method: 'POST',

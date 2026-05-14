@@ -30,7 +30,7 @@ export default function Navbar() {
                         </>
                     ) : (
                         <SignInButton mode="modal">
-                            <button className="btn-primary text-sm !px-5 !py-2.5">
+                            <button className="btn-primary text-sm !px-5 !py-2.5" suppressHydrationWarning>
                                 Get Started
                             </button>
                         </SignInButton>

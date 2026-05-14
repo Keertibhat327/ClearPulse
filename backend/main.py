@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 from routes import analyze, chatbot, tavus, organ, records, appointments, doctor, ipfs, integrations, triage
 

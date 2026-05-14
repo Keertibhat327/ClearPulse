@@ -5,7 +5,10 @@
  * No secrets, API keys, or service credentials are held here.
  */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+let API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+if (API_URL && !API_URL.startsWith("http://") && !API_URL.startsWith("https://")) {
+    API_URL = "http://" + API_URL;
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

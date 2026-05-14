@@ -6,7 +6,10 @@
  */
 
 const PINATA_GATEWAY = process.env.NEXT_PUBLIC_PINATA_GATEWAY || 'https://gateway.pinata.cloud/ipfs';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+let API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+if (API_URL && !API_URL.startsWith('http://') && !API_URL.startsWith('https://')) {
+    API_URL = 'http://' + API_URL;
+}
 
 interface BackendIpfsResponse {
     success: boolean;

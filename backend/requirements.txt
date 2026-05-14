@@ -2,6 +2,7 @@ fastapi
 uvicorn[standard]
 python-dotenv
 httpx
-google-generativeai
+google-genai
 python-multipart
 cryptography>=41.0.0
+groq

@@ -5,7 +5,9 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from google.genai import types
+from google.genai.errors import ClientError
 from services.gemini import get_gemini_client
+from services.groq_client import get_groq_client
 from services.insforge import db_select, db_insert
 
 router = APIRouter()
@@ -82,9 +84,38 @@ Return your response STRICTLY as a JSON object:
             max_output_tokens=1024,
         ),
     )
-    result = chat_session.send_message(req.message)
+    response_text = None
+    try:
+        result = chat_session.send_message(req.message)
+        response_text = result.text
+    except Exception as e:
+        status_code = getattr(e, "code", 500)
+        if status_code in (429, 500, 502, 503, 504) or isinstance(e, ClientError):
+            print(f"Gemini unavailable ({status_code}). Falling back to Groq...")
+            groq_client = get_groq_client()
+            if groq_client:
+                messages = [{"role": "system", "content": system_instruction}]
+                for h in chat_history:
+                    messages.append({"role": "user" if h["role"] == "user" else "assistant", "content": h["parts"][0]["text"]})
+                messages.append({"role": "user", "content": req.message})
+                try:
+                    completion = groq_client.chat.completions.create(
+                        model="llama-3.3-70b-versatile",
+                        messages=messages,
+                        temperature=0.3,
+                        response_format={"type": "json_object"},
+                    )
+                    response_text = completion.choices[0].message.content
+                except Exception as groq_e:
+                    print(f"Groq fallback also failed: {groq_e}")
+                    raise HTTPException(status_code=500, detail="Failed to process chat (both AI services down).")
+            else:
+                raise HTTPException(status_code=500, detail="Gemini failed and Groq API key is not configured.")
+        else:
+            raise HTTPException(status_code=500, detail="Failed to process chat.")
 
-    response_text = result.text
+    if not response_text:
+        raise HTTPException(status_code=500, detail="Failed to get valid response from AI.")
 
     try:
         response = json.loads(re.sub(r"```json\n?|\n?```", "", response_text).strip())

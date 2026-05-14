@@ -11,6 +11,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from services.gemini import get_gemini_client
+from services.groq_client import get_groq_client
 from services.insforge import db_insert
 from google.genai import types
 from google.genai.errors import ClientError
@@ -80,6 +81,39 @@ async def _generate_analysis_with_retries(client, prompt: str, file_bytes: bytes
             except Exception as e:
                 last_error = e
                 await asyncio.sleep(1)
+
+    # Groq Fallback
+    groq_client = get_groq_client()
+    if groq_client:
+        logger.warning("Gemini failed after retries. Falling back to Groq...")
+        try:
+            # Note: Groq's vision models currently support image/* types. PDFs might fail depending on support.
+            b64_data = base64.b64encode(file_bytes).decode("utf-8")
+            messages = [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:{file_type};base64,{b64_data}"
+                            }
+                        }
+                    ]
+                }
+            ]
+            completion = groq_client.chat.completions.create(
+                model="llama-3.2-11b-vision-preview",
+                messages=messages,
+                temperature=0.2,
+                response_format={"type": "json_object"},
+            )
+            class MockResult:
+                text = completion.choices[0].message.content
+            return MockResult()
+        except Exception as groq_e:
+            logger.error(f"Groq fallback failed: {groq_e}")
 
     raise last_error or RuntimeError("AI service unavailable")
 

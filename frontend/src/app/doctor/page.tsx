@@ -207,7 +207,10 @@ export default function DoctorDashboard() {
     const handleCalendarCallback = async (code: string, wallet: string) => {
         window.history.replaceState({}, '', '/doctor');
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            if (apiUrl && !apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
+                apiUrl = 'http://' + apiUrl;
+            }
             const res = await fetch(`${apiUrl}/api/integrations/calendar/callback?code=${code}&state=${wallet}`);
             if (!res.ok) throw new Error('Failed to exchange code');
             await loadProfile();
@@ -224,7 +227,10 @@ export default function DoctorDashboard() {
                 const apt = appointments.find(a => a.id === appointmentId);
                 if (apt) {
                     try {
-                        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+                        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+                        if (apiUrl && !apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
+                            apiUrl = 'http://' + apiUrl;
+                        }
                         const res = await fetch(`${apiUrl}/api/integrations/calendar/create`, {
                             method: 'POST',
                             headers: {

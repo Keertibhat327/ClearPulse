@@ -35,7 +35,10 @@ export default function TriagePage() {
         setIsTyping(true);
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            if (apiUrl && !apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
+                apiUrl = 'http://' + apiUrl;
+            }
             const response = await fetch(`${apiUrl}/api/triage/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -129,6 +132,7 @@ export default function TriagePage() {
                             placeholder="Describe your symptoms (e.g. 'I have a mild headache since yesterday')..."
                             className="flex-1 bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             disabled={isTyping}
+                            suppressHydrationWarning
                         />
                         <button 
                             onClick={handleSend}
