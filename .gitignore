@@ -67,6 +67,7 @@ next-env.d.ts
 # NEVER commit .env — it contains all API keys and secrets
 backend/.env
 backend/.env*
+!backend/.env.example
 backend/__pycache__/
 backend/routes/__pycache__/
 backend/services/__pycache__/
