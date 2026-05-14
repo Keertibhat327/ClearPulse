@@ -1,0 +1,486 @@
+/* Imports: Playfair Display (Serif) & Space Grotesk (Sans) & Inter (Fallback) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Retro Palette - Tavus Inspired */
+  --retro-bg: #E6E8F0;
+  --retro-card-bg: #FFFFFF;
+  --retro-text: #000000;
+  --retro-border: #000000;
+  --retro-accent-pink: #FF90E8;
+  --retro-accent-green: #23F0C7;
+  --retro-accent-yellow: #F0C419;
+
+  /* Retain and override semantic names */
+  --primary: #000000;
+  --text-primary: #000000;
+  --bg-dark: #E6E8F0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  background-color: #f7f4ef;
+  color: black;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-grid {
+  background-image: url('/grid-background.svg');
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+/* Hard reset for links to look brutalist */
+a {
+  color: inherit;
+  text-decoration-thickness: 2px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* --- Retro Components --- */
+
+/* The main "Window" container style */
+.retro-card,
+.glass-card {
+  background: var(--retro-card-bg);
+  border: 2px solid var(--retro-border);
+  box-shadow: 6px 6px 0px 0px var(--retro-border);
+  border-radius: 0px;
+  backdrop-filter: none !important;
+  color: black;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.retro-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px 0px var(--retro-border);
+}
+
+/* Buttons */
+.btn-primary {
+  @apply px-6 py-3 font-bold text-black transition-all duration-150 inline-flex items-center justify-center gap-2;
+  background: var(--retro-accent-pink);
+  border: 2px solid var(--retro-border);
+  box-shadow: 4px 4px 0px 0px var(--retro-border);
+  border-radius: 0px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px var(--retro-border);
+}
+
+.btn-primary:hover {
+  background: #ff70e0;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px var(--retro-border);
+}
+
+/* Secondary Button - usually white or accent */
+.btn-secondary {
+  @apply px-6 py-3 font-bold text-black transition-all duration-150;
+  background: #ffffff;
+  border: 2px solid var(--retro-border);
+  box-shadow: 4px 4px 0px 0px var(--retro-border);
+  border-radius: 0px;
+  text-transform: uppercase;
+}
+
+.btn-secondary:hover {
+  background: #f3f4f6;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px var(--retro-border);
+}
+
+/* Header Text Styles */
+.retro-title {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Badges */
+.badge {
+  @apply px-2 py-0.5 border-2 border-black font-bold text-xs uppercase inline-block;
+  border-radius: 0;
+  box-shadow: 2px 2px 0px 0px black;
+  color: black !important;
+  /* Force black text on badges */
+}
+
+/* Badge variants - using backgrounds */
+.badge-indigo {
+  @apply bg-indigo-200;
+}
+
+.badge-cyan {
+  @apply bg-cyan-200;
+}
+
+.badge-green {
+  @apply bg-emerald-200;
+}
+
+.badge-red {
+  @apply bg-red-200;
+}
+
+.badge-yellow {
+  @apply bg-yellow-200;
+}
+
+/* Form Inputs */
+input,
+textarea,
+select {
+  @apply w-full bg-white border-2 border-black p-3 font-mono text-sm focus:outline-none;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 0;
+  color: black;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px black;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-left: 2px solid black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--retro-accent-green);
+  border: 2px solid black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00d6aa;
+}
+
+/* Window Header Bar (for that OS look) */
+.window-header {
+  border-bottom: 2px solid var(--retro-border);
+  background: #f3f4f6;
+  /* Light grey header */
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.window-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.window-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--retro-border);
+  background: white;
+  border-radius: 50%;
+}
+
+.window-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* Global Mesh Gradient */
+.bg-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(34, 211, 238, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(251, 191, 36, 0.1) 0px, transparent 50%);
+  pointer-events: none;
+}
+
+/* ============================================
+   ANIMATION KEYFRAMES
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 6px 6px 0px 0px var(--retro-border), 0 0 0 0 rgba(255, 144, 232, 0);
+  }
+  50% {
+    box-shadow: 6px 6px 0px 0px var(--retro-border), 0 0 20px 4px rgba(255, 144, 232, 0.3);
+  }
+}
+
+@keyframes bounceDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes drawLine {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+/* ============================================
+   ANIMATION UTILITY CLASSES
+   ============================================ */
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+.animate-bounce-down {
+  animation: bounceDown 2s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.animate-draw-line {
+  animation: drawLine 1s ease-out forwards;
+}
+
+/* Stagger delay utilities */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1, #06b6d4, #FF90E8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient text */
+.gradient-text-animated {
+  background: linear-gradient(270deg, #6366f1, #FF90E8, #23F0C7, #F0C419, #6366f1);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* Glow effect on cards */
+.glow-pink:hover {
+  box-shadow: 8px 8px 0px 0px var(--retro-border), 0 0 30px rgba(255, 144, 232, 0.25);
+}
+
+.glow-green:hover {
+  box-shadow: 8px 8px 0px 0px var(--retro-border), 0 0 30px rgba(35, 240, 199, 0.25);
+}
+
+.glow-yellow:hover {
+  box-shadow: 8px 8px 0px 0px var(--retro-border), 0 0 30px rgba(240, 196, 25, 0.25);
+}
+
+/* Re-enable pulse for typewriter cursor */
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Colored left border accent on hover */
+.hover-border-pink:hover {
+  border-left: 4px solid var(--retro-accent-pink) !important;
+}
+
+.hover-border-green:hover {
+  border-left: 4px solid var(--retro-accent-green) !important;
+}
+
+.hover-border-yellow:hover {
+  border-left: 4px solid var(--retro-accent-yellow) !important;
+}
+
+/* Timeline connector line */
+.timeline-line {
+  position: absolute;
+  left: 29px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--retro-border) 0px,
+    var(--retro-border) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/* Section divider */
+.section-divider {
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--retro-border) 0px,
+    var(--retro-border) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+}
