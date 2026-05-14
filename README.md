@@ -2,8 +2,6 @@
 
 > **AI-powered, blockchain-secured decentralized healthcare intelligence platform.**
 
-🏆 **HackaLeague Track:** Digital, Economic & Information Systems
-
 Upload medical reports, receive instant AI diagnostics with risk scores, chat with an AI health assistant, watch personalized AI doctor video explanations — all with patient-controlled, on-chain access management and zero-knowledge encryption.
 
 ---
