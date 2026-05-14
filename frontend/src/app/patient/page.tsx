@@ -16,6 +16,7 @@ import {
     analyzeReport,
 } from '@/lib/api';
 import FileUpload from '@/components/FileUpload';
+
 import RecordCard from '@/components/RecordCard';
 import RiskScore from '@/components/RiskScore';
 import ChatBot from '@/components/ChatBot';
@@ -26,6 +27,7 @@ import AnalysisView from './components/AnalysisView';
 import AppointmentsView from './components/AppointmentsView';
 import HealthView from './components/HealthView';
 import DigitalTwin from '@/components/DigitalTwin';
+import TriagePanel from './components/TriagePanel';
 import { generateEncryptionKey, encryptFile, decryptFileFromIPFS } from '@/lib/encryption';
 import { uploadToIPFS, isIPFSConfigured } from '@/lib/ipfs';
 
@@ -70,6 +72,7 @@ export default function PatientDashboard() {
     const [isRegistering, setIsRegistering] = useState(false);
     const [isRegistered, setIsRegistered] = useState(true);
     const [activeTab, setActiveTab] = useState<'analysis' | 'chat' | 'avatar' | 'access' | 'appointments' | 'health' | 'twin'>('analysis');
+    const [dashboardMode, setDashboardMode] = useState<'records' | 'triage'>('records');
     const [uploadStatus, setUploadStatus] = useState('');
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -401,14 +404,14 @@ export default function PatientDashboard() {
 
             <div className="max-w-7xl mx-auto relative z-10">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
                     <div>
                         <h1 className="text-4xl font-semibold text-gray-900 tracking-tight mb-2">
                             Patient Dashboard
                         </h1>
                         <p className="text-base text-gray-500 font-medium">Manage your health records and AI analysis securely</p>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 items-center flex-wrap">
                         {!isRegistered && (
                             <button disabled={isRegistering} className="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors text-sm">
                                 {isRegistering ? 'Registering...' : 'Complete Profile'}
@@ -416,15 +419,54 @@ export default function PatientDashboard() {
                         )}
                         <Link
                             href="/patient/book"
-                            className="bg-blue-600 text-white rounded-xl px-6 py-3 font-medium shadow-sm hover:bg-blue-700 hover:shadow transition-all flex items-center gap-2"
+                            className="bg-white border border-gray-200 text-gray-700 rounded-xl px-5 py-2.5 font-medium hover:bg-gray-50 transition-all flex items-center gap-2 text-sm shadow-sm"
                         >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                             Book Appointment
                         </Link>
                     </div>
                 </div>
 
-                <div className="grid lg:grid-cols-[1fr_2.5fr] gap-8">
+                {/* ── Mode Toggle ─────────────────────────────────────────── */}
+                <div className="flex gap-3 mb-8">
+                    <button
+                        id="mode-medical-records"
+                        onClick={() => setDashboardMode('records')}
+                        className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-semibold text-sm transition-all border ${
+                            dashboardMode === 'records'
+                                ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-100'
+                                : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-600'
+                        }`}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        Medical Records
+                    </button>
+                    <button
+                        id="mode-symptom-triage"
+                        onClick={() => setDashboardMode('triage')}
+                        className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-semibold text-sm transition-all border ${
+                            dashboardMode === 'triage'
+                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100'
+                                : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
+                        }`}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        Symptom Triage
+                        <span className="bg-white/25 text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                            {dashboardMode === 'triage' ? 'ACTIVE' : 'AI'}
+                        </span>
+                    </button>
+                </div>
+
+                {/* ── Triage Mode ─────────────────────────────────────── */}
+                {dashboardMode === 'triage' && address && (
+                    <div className="animate-fade-in">
+                        <TriagePanel patientId={address} />
+                    </div>
+                )}
+
+                {/* ── Medical Records Mode ─────────────────────────────── */}
+                {dashboardMode === 'records' && <div className="grid lg:grid-cols-[1fr_2.5fr] gap-8">
                     {/* Left column: Upload + Records List */}
                     <div className="space-y-6">
                         {/* Upload Panel */}
@@ -645,7 +687,7 @@ export default function PatientDashboard() {
                             </div>
                         )}
                     </div>
-                </div>
+                </div>}
 
                 <div className="mt-8">
                     <MedicalDisclaimer />

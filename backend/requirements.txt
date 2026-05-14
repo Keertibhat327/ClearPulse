@@ -6,3 +6,4 @@ google-genai
 python-multipart
 cryptography>=41.0.0
 groq
+pypdf

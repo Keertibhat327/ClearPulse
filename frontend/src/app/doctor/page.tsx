@@ -35,6 +35,18 @@ interface GrantedRecord {
     };
 }
 
+interface TriageAlert {
+    id: string;
+    patient_id: string;
+    triage_level: 'Home' | 'Clinic' | 'Emergency' | 'Assessing';
+    symptom_summary: string;
+    recommended_action: string;
+    care_recommendations: string[];
+    session_complete: boolean;
+    last_message: string;
+    created_at: string;
+}
+
 interface Appointment {
     id: string;
     patient_wallet: string;
@@ -78,7 +90,8 @@ export default function DoctorDashboard() {
     const [isRegistered, setIsRegistered] = useState(true);
     const [selectedGrant, setSelectedGrant] = useState<GrantedRecord | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'patients' | 'appointments' | 'profile'>('patients');
+    const [activeTab, setActiveTab] = useState<'patients' | 'appointments' | 'profile' | 'triage'>('patients');
+    const [triageAlerts, setTriageAlerts] = useState<TriageAlert[]>([]);
 
     // Profile state
     const [profile, setProfile] = useState<DoctorProfile | null>(null);
@@ -99,6 +112,7 @@ export default function DoctorDashboard() {
         loadProfile();
         loadGrantedRecords();
         loadAppointments();
+        loadTriageAlerts();
     }, [isLoaded, isSignedIn, address]);
 
     const loadProfile = async () => {
@@ -164,6 +178,16 @@ export default function DoctorDashboard() {
         } catch (err) {
             console.error('Failed to load appointments:', err);
         }
+    };
+
+    const loadTriageAlerts = async () => {
+        if (!address) return;
+        try {
+            let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+            if (apiUrl && !apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) { apiUrl = 'http://' + apiUrl; }
+            const res = await fetch(`${apiUrl}/api/triage/doctor-alerts/${address}`);
+            if (res.ok) { const data = await res.json(); setTriageAlerts(data.alerts || []); }
+        } catch (err) { console.error('Failed to load triage alerts:', err); }
     };
 
     const loadConsultNotes = async (patientWallet: string) => {
@@ -313,7 +337,7 @@ export default function DoctorDashboard() {
                         { label: 'Active Patients', value: grants.length, icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> },
                         { label: "Today's Appts", value: todayAppointments.length, icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-600"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> },
                         { label: 'Requires Action', value: pendingAppointments.length, icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> },
-                        { label: 'Clinical Notes', value: consultNotes.length, icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-600"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> },
+                        { label: 'Triage Alerts', value: triageAlerts.filter(a => a.triage_level === 'Emergency' || a.triage_level === 'Clinic').length, icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> },
                     ].map((stat, i) => (
                         <div key={i} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center gap-4">
                             <div className={`p-3 rounded-xl flex items-center justify-center shrink-0 ${i === 0 ? 'bg-blue-50' : i === 1 ? 'bg-indigo-50' : i === 2 ? 'bg-amber-50' : 'bg-emerald-50'
@@ -330,18 +354,32 @@ export default function DoctorDashboard() {
 
                 {/* Tab bar */}
                 <div className="flex gap-2 overflow-x-auto pb-6 border-b border-slate-300 mb-8">
-                    {(['patients', 'appointments', 'profile'] as const).map(tab => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all shrink-0 ${activeTab === tab
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-white text-gray-500 hover:text-gray-900 border border-slate-300'
-                                }`}
-                        >
-                            {tab === 'patients' ? 'Patient Records' : tab === 'appointments' ? 'Schedule & Appts' : 'Provider Profile'}
-                        </button>
-                    ))}
+                    {(['patients', 'appointments', 'triage', 'profile'] as const).map(tab => {
+                        const emergencyCount = triageAlerts.filter(a => a.triage_level === 'Emergency').length;
+                        return (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all shrink-0 flex items-center gap-2 ${activeTab === tab
+                                    ? tab === 'triage' ? 'bg-red-600 text-white shadow-sm' : 'bg-blue-600 text-white shadow-sm'
+                                    : 'bg-white text-gray-500 hover:text-gray-900 border border-slate-300'
+                                    }`}
+                            >
+                                {tab === 'patients' ? 'Patient Records'
+                                    : tab === 'appointments' ? 'Schedule & Appts'
+                                    : tab === 'triage' ? (
+                                        <>
+                                            🚨 Triage Alerts
+                                            {emergencyCount > 0 && (
+                                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${activeTab === 'triage' ? 'bg-white text-red-600' : 'bg-red-500 text-white'}`}>
+                                                    {emergencyCount}
+                                                </span>
+                                            )}
+                                        </>
+                                    ) : 'Provider Profile'}
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* ==================== PATIENTS TAB ==================== */}
@@ -703,7 +741,7 @@ export default function DoctorDashboard() {
                                                 </div>
                                                 <div>
                                                     <p className="text-sm font-semibold text-gray-900">
-                                                        {new Date(apt.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} • {apt.time}
+                                                        {new Date(apt.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} ΓÇó {apt.time}
                                                     </p>
                                                     <div className="flex items-center gap-2 mt-0.5">
                                                         <span className="text-xs font-mono text-gray-500 bg-gray-50 px-1.5 py-0.5 rounded border border-slate-200">
@@ -745,13 +783,97 @@ export default function DoctorDashboard() {
                     </div>
                 )}
 
+                {/* ==================== TRIAGE ALERTS TAB ==================== */}
+                {activeTab === 'triage' && (
+                    <div className="space-y-6 animate-fade-in max-w-5xl">
+                        <div className="flex items-center justify-between mb-2">
+                            <div>
+                                <h2 className="text-lg font-semibold text-gray-900">Patient Triage Alerts</h2>
+                                <p className="text-sm text-gray-500 mt-0.5">AI-assessed symptoms from patients linked to your practice</p>
+                            </div>
+                            <button onClick={loadTriageAlerts} className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-2 rounded-xl border border-blue-100 transition-all flex items-center gap-1.5 hover:bg-blue-100">
+                                ↻ Refresh
+                            </button>
+                        </div>
+                        
+                        {triageAlerts.length === 0 ? (
+                            <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-sm">
+                                <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4 border border-slate-200 text-2xl">🩺</div>
+                                <p className="text-base font-semibold text-gray-900 mb-1">No triage alerts</p>
+                                <p className="text-sm text-gray-500">Alerts appear when patients complete a symptom triage assessment.</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {triageAlerts.map((alert, i) => {
+                                    const isEmergency = alert.triage_level === 'Emergency';
+                                    const isClinic = alert.triage_level === 'Clinic';
+                                    
+                                    return (
+                                        <div key={alert.id || i} className={`bg-white rounded-3xl p-6 border shadow-sm ${isEmergency ? 'border-red-200 animate-pulse' : isClinic ? 'border-amber-200' : 'border-green-200'}`}>
+                                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl shrink-0 ${isEmergency ? 'bg-red-50 border border-red-200' : isClinic ? 'bg-amber-50 border border-amber-200' : 'bg-green-50 border border-green-200'}`}>
+                                                        {isEmergency ? '🚨' : isClinic ? '🩺' : '🏡'}
+                                                    </div>
+                                                    <div>
+                                                        <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${isEmergency ? 'bg-red-50 text-red-700 border-red-200' : isClinic ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-green-50 text-green-700 border-green-200'}`}>
+                                                            {alert.triage_level.toUpperCase()}
+                                                        </span>
+                                                        <p className="text-xs font-mono text-gray-500 mt-1">Patient: {alert.patient_id?.slice(0, 8)}...{alert.patient_id?.slice(-4)}</p>
+                                                    </div>
+                                                </div>
+                                                <p className="text-xs text-gray-400 shrink-0">
+                                                    {new Date(alert.created_at).toLocaleString('en-IN', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}
+                                                </p>
+                                            </div>
+                                            
+                                            {alert.symptom_summary && (
+                                                <div className="mb-3">
+                                                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Clinical Summary</p>
+                                                    <p className="text-sm text-gray-700 bg-gray-50 rounded-xl p-3 border border-slate-200 leading-relaxed">{alert.symptom_summary}</p>
+                                                </div>
+                                            )}
+                                            
+                                            {alert.recommended_action && (
+                                                <div className="mb-3">
+                                                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Recommended Action</p>
+                                                    <p className={`text-sm font-semibold rounded-xl p-3 border ${isEmergency ? 'bg-red-50 text-red-800 border-red-200' : isClinic ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-green-50 text-green-800 border-green-200'}`}>
+                                                        {alert.recommended_action}
+                                                    </p>
+                                                </div>
+                                            )}
+                                            
+                                            {alert.care_recommendations?.length > 0 && (
+                                                <ul className="space-y-1.5 mb-3">
+                                                    {alert.care_recommendations.slice(0, 3).map((rec, j) => (
+                                                        <li key={j} className="flex items-start gap-2 text-sm text-gray-700">
+                                                            <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">{j+1}</span>
+                                                            {rec}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                            
+                                            {isClinic && (
+                                                <button onClick={() => setActiveTab('appointments')} className="mt-2 text-xs font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 transition-all hover:bg-blue-100">
+                                                    📅 View Appointments
+                                                </button>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {/* ==================== PROFILE TAB ==================== */}
                 {activeTab === 'profile' && (
                     <div className="max-w-2xl mx-auto animate-fade-in">
                         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
                             <div className="flex items-center gap-4 mb-8">
                                 <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center text-2xl shrink-0">
-                                    👨‍⚕️
+                                    ≡ƒæ¿ΓÇìΓÜò∩╕Å
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-semibold text-gray-900">Provider Settings</h2>
@@ -837,7 +959,7 @@ export default function DoctorDashboard() {
                                     </div>
                                     {profile?.google_calendar_connected ? (
                                         <span className="px-3 py-1.5 rounded-lg bg-green-50 text-green-700 border border-green-200 text-xs font-semibold shrink-0">
-                                            ✓ Synced
+                                            Γ£ô Synced
                                         </span>
                                     ) : (
                                         <button

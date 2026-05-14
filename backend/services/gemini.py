@@ -27,5 +27,5 @@ def get_gemini_client() -> genai.Client:
     return genai.Client(api_key=api_key)
 
 
-def get_gemini_model(model_name: str = "gemini-2.5-flash") -> _ModelWrapper:
+def get_gemini_model(model_name: str = "gemini-2.0-flash") -> _ModelWrapper:
     return _ModelWrapper(get_gemini_client(), model_name)

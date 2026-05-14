@@ -58,11 +58,12 @@ def _fallback_analysis_from_text(file_bytes: bytes, file_type: str) -> dict:
 
 
 async def _generate_analysis_with_retries(client, prompt: str, file_bytes: bytes, file_type: str):
-    models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+    # Updated to valid model names and fewer retries to fail over faster
+    models = ["gemini-2.0-flash", "gemini-1.5-flash"]
     last_error = None
 
     for model in models:
-        for attempt in range(2):
+        for attempt in range(1): # Reduced to 1 attempt per model for speed
             try:
                 return client.models.generate_content(
                     model=model,
@@ -75,43 +76,74 @@ async def _generate_analysis_with_retries(client, prompt: str, file_bytes: bytes
                 last_error = e
                 status_code = getattr(e, "code", 500)
                 if status_code in (429, 500, 502, 503, 504):
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(0.5)
                     continue
                 raise
             except Exception as e:
                 last_error = e
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.5)
 
     # Groq Fallback
     groq_client = get_groq_client()
     if groq_client:
         logger.warning("Gemini failed after retries. Falling back to Groq...")
         try:
-            # Note: Groq's vision models currently support image/* types. PDFs might fail depending on support.
-            b64_data = base64.b64encode(file_bytes).decode("utf-8")
-            messages = [
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:{file_type};base64,{b64_data}"
+            # Handle PDF text extraction if it's a PDF
+            extracted_text = ""
+            if file_type == "application/pdf":
+                try:
+                    import io
+                    from pypdf import PdfReader
+                    reader = PdfReader(io.BytesIO(file_bytes))
+                    extracted_text = "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
+                except Exception as pdf_e:
+                    logger.error(f"PDF text extraction failed: {pdf_e}")
+
+            # Choose model based on content
+            is_image = file_type.startswith("image/")
+            
+            if is_image:
+                # Use Groq Vision for images
+                b64_data = base64.b64encode(file_bytes).decode("utf-8")
+                messages = [
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": prompt},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:{file_type};base64,{b64_data}"
+                                }
                             }
-                        }
-                    ]
-                }
-            ]
+                        ]
+                    }
+                ]
+                model = "llama-3.2-11b-vision-preview"
+            else:
+                # Use text-only LLM for PDFs (with extracted text) or text files
+                content = prompt
+                if extracted_text:
+                    content += f"\n\n--- EXTRACTED REPORT TEXT ---\n{extracted_text}"
+                elif file_type.startswith("text/"):
+                    content += f"\n\n--- REPORT TEXT ---\n{file_bytes.decode('utf-8', errors='ignore')}"
+                
+                messages = [
+                    {"role": "user", "content": content}
+                ]
+                model = "llama-3.3-70b-versatile"
+
             completion = groq_client.chat.completions.create(
-                model="llama-3.2-11b-vision-preview",
+                model=model,
                 messages=messages,
                 temperature=0.2,
                 response_format={"type": "json_object"},
             )
+            
             class MockResult:
                 text = completion.choices[0].message.content
             return MockResult()
+            
         except Exception as groq_e:
             logger.error(f"Groq fallback failed: {groq_e}")
 

@@ -8,8 +8,10 @@ router = APIRouter()
 
 def _is_database_unavailable(error: Exception) -> bool:
     error_msg = str(error).lower()
+    error_type = error.__class__.__name__.lower()
+    combined = f"{error_msg} {error_type}"
     return any(
-        marker in error_msg
+        marker in combined
         for marker in (
             "503",
             "service temporarily unavailable",
