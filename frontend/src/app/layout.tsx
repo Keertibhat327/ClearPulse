@@ -3,6 +3,10 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import Navbar from '@/components/Navbar';
 
+const clerkPublishableKey =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  'pk_test_cHJvbW90ZWQtcmVkZmlzaC04MC5jbGVyay5hY2NvdW50cy5kZXYk';
+
 export const metadata: Metadata = {
   title: 'MediChain AI — Decentralized Healthcare Intelligence',
   description: 'AI-powered blockchain-secured medical record platform with intelligent analysis, chatbot, and AI doctor avatar.',
@@ -17,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={clerkPublishableKey}>
       <html lang="en" suppressHydrationWarning>
         <body>
           <div className="bg-mesh" aria-hidden="true" />
