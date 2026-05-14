@@ -47,8 +47,6 @@ When a user selects **Patient** on the landing page, they are taken to the regis
 
 ## 🧑‍⚕️ Patient Dashboard
 
-![Patient Dashboard](./screenshots/patient-dashboard.png)
-
 The Patient Dashboard is the core interface for patients. It is organized into several tabs/views:
 
 ### 📊 Analysis Tab
