@@ -1,4 +1,4 @@
-# MediChain AI 🏥⛓️
+# ClearPulse AI 🏥⛓️
 
 > **AI-powered, blockchain-secured decentralized healthcare intelligence platform.**
 
@@ -10,16 +10,17 @@ Upload medical reports, receive instant AI diagnostics with risk scores, chat wi
 
 ### Landing Page
 
-![MediChain AI Landing Page](./screenshots/landing-page.png)
+![ClearPulse AI Landing Page](./screenshots/landing-page.png)
 
-The landing page is the entry point of **MediChain AI**. Here's what each part does:
+The landing page is the entry point of **ClearPulse AI**. Here's what each part does:
 
 | Section | Description |
 |---------|-------------|
-| **Navbar** | Top bar with the MediChain AI logo and a pink **GET STARTED** button that jumps users to the role selector. |
+| **Navbar** | Top bar with the ClearPulse AI logo — a custom ECG pulse-line SVG mark with `ClearPulse` in dark gray and `Pulse` in indigo — and navigation links. |
 | **Hero Badge** | A small pill badge reading *"Decentralized Healthcare Intelligence"* to communicate the core value proposition at a glance. |
-| **Hero Headline** | Bold `MediChain AI` title with the animated tagline *"Instant AI diagnostics from your reports."* — typed letter-by-letter for a dynamic feel. |
+| **Hero Headline** | Bold `ClearPulse AI` title with the animated tagline *"Instant AI diagnostics from your reports."* — typed letter-by-letter for a dynamic feel. |
 | **Hero Description** | A brief paragraph explaining the four core features: report upload, AI analysis, AI chat, and AI video — all secured on-chain. |
+| **Animated DNA Helix** | A canvas-rendered 3D animated DNA double helix runs diagonally across the right side of the hero section — two intertwining strands with purple-to-pink gradient, base-pair rungs, node dots, and a soft glow effect. Animates continuously in the background without covering content. |
 | **SELECT YOUR ROLE** | Two cards that let users choose their journey: **Patient** or **Doctor**. |
 | **Patient Card** | Leads to the Patient Dashboard where users can upload reports, get AI analysis, talk to AI, and control data access. |
 | **Doctor Card** | Leads to the Doctor Dashboard where doctors can view patient records shared with them and review AI-generated analysis. |
@@ -36,7 +37,7 @@ When a user selects **Patient** on the landing page, they are taken to the regis
 
 | Element | Description |
 |---------|-------------|
-| **MediChain AI Icon** | Blue layered logo icon confirming you're in the MediChain ecosystem |
+| **ClearPulse AI Icon** | Blue layered logo icon confirming you're in the ClearPulse ecosystem |
 | **"Join as Patient" Heading** | Confirms the role being registered — *Patient* |
 | **Subtitle** | *"You're registering as a patient"* — clear context for the user |
 | **Wallet Connected (green dot)** | Shows the MetaMask wallet is successfully connected. Displays the truncated wallet address (`0xf39Fd6e5...2266`) with a **Disconnect** button to switch accounts |
@@ -55,7 +56,7 @@ When a user selects **Patient** on the landing page, they are taken to the regis
 | **Request from: localhost:3001** | The frontend app (Next.js dev server) that initiated the transaction request |
 | **Network fee: ~0 ETH / $0.07** | The gas cost is minimal — just enough to write the registration to the blockchain |
 | **Speed** | Transaction speed selector (configurable) |
-| **Cancel / Confirm Buttons** | User can cancel or confirm the blockchain registration — clicking **Confirm** calls `registerPatient()` on `MediChainRecords.sol` and redirects to the Patient Dashboard |
+| **Cancel / Confirm Buttons** | User can cancel or confirm the blockchain registration — clicking **Confirm** calls `registerPatient()` on `ClearPulseRecords.sol` and redirects to the Patient Dashboard |
 
 > **Why blockchain registration?** Storing roles on-chain ensures that only verified, wallet-authenticated patients and doctors can interact with sensitive medical data. No central authority can modify or revoke roles without the user's private key.
 
@@ -155,13 +156,13 @@ A chronological, card-based list of all past reports — most recent first. Each
 
 ### 🤖 AI Chat Tab
 
-![AI Chat — MediChain Chatbot](./screenshots/chatbor.png)
+![AI Chat — ClearPulse Chatbot](./screenshots/chatbor.png)
 
 The **AI Chat** tab provides an intelligent, context-aware health assistant directly inside the dashboard. Responses are grounded in the patient's uploaded medical records.
 
 | Element | Description |
 |---------|-------------|
-| **MediChain AI Header** | Shows the bot name, a pulsing green **Online & Ready to Help** status dot, and a gradient robot avatar icon |
+| **ClearPulse AI Header** | Shows the bot name, a pulsing green **Online & Ready to Help** status dot, and a gradient robot avatar icon |
 | **Greeting Message** | On open, the AI proactively introduces itself and acknowledges having reviewed the patient's records, ready to explain findings or answer questions |
 | **⚠️ Medical Disclaimer Box** | A rose-colored warning block beneath every AI response — reminds users the AI cannot diagnose and advises immediate emergency care for severe symptoms |
 | **HIGH CONFIDENCE · 100%** | A confidence score label shown under each AI response to indicate how certain the model is about its answer |
@@ -276,7 +277,7 @@ The **Data Access** tab gives patients full, sovereign control over who can view
 | **Doctor entry — M V Deepak** | Shows the doctor's name and truncated wallet address (`0XFABB0A...51694A`) for on-chain identity verification |
 | **REVOKE button** | Red button next to each granted doctor — triggers a `revokeAccess()` blockchain transaction to instantly remove that doctor's access |
 
-> All access control is enforced on-chain via the `MediChainRecords.sol` smart contract — records are cryptographically inaccessible to any doctor not explicitly granted access by the patient.
+> All access control is enforced on-chain via the `ClearPulseRecords.sol` smart contract — records are cryptographically inaccessible to any doctor not explicitly granted access by the patient.
 
 ### 📅 Book Appointment — 3-Step Booking Flow
 
@@ -439,7 +440,7 @@ A chronological timeline of all appointments (confirmed + pending) — `3 total`
 
 #### Medical Disclaimer Footer
 
-> ⚠️ *"MediChain AI provides AI-powered analysis for informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical decisions."*
+> ⚠️ *"ClearPulse AI provides AI-powered analysis for informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical decisions."*
 
 ### Provider Profile Tab
 
@@ -457,6 +458,42 @@ The **Provider Profile** tab lets doctors set up their public-facing profile —
 | **Save Profile Settings** | Full-width blue button that persists all changes to the InsForge database |
 
 > Profile data is stored off-chain in InsForge but the wallet address is the canonical on-chain identity — patients grant record access to this wallet via smart contract.
+
+---
+
+## 🎨 Recent UI Updates
+
+### Animated DNA Helix Background
+
+A fully custom canvas-based animated DNA helix was added to the hero section of the landing page. It replaces the static background image with a living, breathing visual that reinforces the medical/genomics theme.
+
+**Technical details:**
+- Built with the HTML5 Canvas API and `requestAnimationFrame` — zero external dependencies
+- Two sigmoid strands rendered as smooth line segments with per-segment depth (`z = sin(angle)`) driving stroke width and opacity for a true 3D cylindrical look
+- Helix spine runs **diagonally** from top-right to bottom-left (matching the MYDNA reference aesthetic), positioned at ~55–82% canvas width so it stays right-side without overlapping text
+- Color gradient: violet (`hsl(265)`) at the top → pink-purple (`hsl(320)`) at the bottom
+- Base-pair rungs drawn every 4 steps with semi-transparent strokes; node dots at attachment points
+- Soft glow pass: a blurred wide stroke rendered first to create luminous halo around strands
+- Floating particle dust cloud (80 deterministic particles) scattered around the helix spine
+- Fully responsive — canvas resizes with the window via a `resize` event listener
+- Cleans up `requestAnimationFrame` and event listeners on component unmount
+
+**File:** `frontend/src/components/landing/DNABackground.tsx`
+
+---
+
+### Logo Redesign
+
+The navbar logo was redesigned from a generic blue rounded-square icon to a custom **ECG pulse-line SVG mark**.
+
+| Before | After |
+|--------|-------|
+| Blue rounded square with stacked-layers icon | Custom SVG: flat baseline → sharp ECG spike → flat tail → filled dot with halo |
+| `gradient-text` rainbow wordmark | `Clear` in dark gray + `Pulse` in solid indigo |
+
+**Design rationale:** The pulse/heartbeat waveform is instantly recognisable as medical without being cliché. Single-color (`indigo-500`) keeps it crisp at small sizes. The wordmark split (`Clear` / `Pulse`) adds visual hierarchy without gradients.
+
+**File:** `frontend/src/components/Navbar.tsx`
 
 ---
 
@@ -532,7 +569,7 @@ TAVUS_REPLICA_ID=<your-tavus-replica-id>
 ```
 medicare-hackaleague/
 ├── blockchain/                     # Smart contract
-│   ├── contracts/MediChainRecords.sol
+│   ├── contracts/ClearPulseRecords.sol
 │   ├── scripts/deploy.ts
 │   └── hardhat.config.ts
 ├── frontend/                       # Next.js App Router
@@ -565,7 +602,7 @@ medicare-hackaleague/
 
 ---
 
-## ⛓️ Smart Contract (`MediChainRecords.sol`)
+## ⛓️ Smart Contract (`ClearPulseRecords.sol`)
 
 | Function | Description |
 |----------|-------------|
