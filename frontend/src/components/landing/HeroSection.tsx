@@ -1,26 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import Typewriter from '@/components/Typewriter';
+import DNABackground from '@/components/landing/DNABackground';
 import { Heart, Stethoscope, ChevronDown } from 'lucide-react';
 
 export default function HeroSection() {
     return (
         <section className="relative pt-32 pb-24 px-6 overflow-hidden min-h-[90vh] flex items-center justify-center bg-[#fdfbf7]">
-            {/* Background Image - Optimized */}
-            <div className="absolute inset-0 z-0 select-none pointer-events-none">
-                <Image
-                    src="https://r2.vidzflow.com/thumbnails/qPWiotOQpN_1762299204.jpg"
-                    alt="Medical Background"
-                    fill
-                    className="object-cover opacity-90"
-                    priority
-                    sizes="100vw"
-                />
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#fdfbf7]/30 via-transparent to-[#fdfbf7]" />
-            </div>
+            {/* Animated DNA Background */}
+            <DNABackground />
 
             {/* Floating Decorative Dots */}
             <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden select-none">
@@ -39,13 +28,8 @@ export default function HeroSection() {
                 </div>
 
                 {/* Title */}
-                <h1 className="animate-fade-in-up delay-200 text-6xl md:text-8xl font-black leading-tight mb-6 drop-shadow-sm mix-blend-multiply">
-                    <span className="text-black relative inline-block">
-                        MediChain
-                        <span className="absolute -bottom-2 left-0 w-full h-4 bg-retro-accent-pink -z-10 opacity-80 transform -skew-x-12" />
-                    </span>
-                    {' '}
-                    <span className="gradient-text-animated">AI</span>
+                <h1 className="animate-fade-in-up delay-200 text-6xl md:text-8xl font-black leading-tight mb-6 drop-shadow-sm mix-blend-multiply text-black">
+                    ClearPulse AI
                 </h1>
 
                 {/* Typewriter */}
@@ -62,7 +46,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* Description */}
-                <p className="animate-fade-in-up delay-500 text-base text-gray-700 max-w-xl mx-auto mb-14 font-medium bg-white/60 p-5 border-2 border-black/10 backdrop-blur-sm leading-relaxed">
+                <p className="animate-fade-in-up delay-500 text-base text-gray-600 max-w-lg mx-auto mb-14 leading-relaxed">
                     Upload medical reports, get instant AI analysis with risk scores, chat with an AI health assistant, and watch personalized video explanations — all with patient-controlled access on-chain.
                 </p>
 
