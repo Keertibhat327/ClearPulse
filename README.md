@@ -1,8 +1,8 @@
-# ClearPulse AI 🏥⛓️
+# ClearPulse AI 🏥
 
-> **AI-powered, blockchain-secured decentralized healthcare intelligence platform.**
+> **AI-powered decentralized healthcare intelligence platform.**
 
-Upload medical reports, receive instant AI diagnostics with risk scores, chat with an AI health assistant, watch personalized AI doctor video explanations — all with patient-controlled, on-chain access management and zero-knowledge encryption.
+Upload medical reports, receive instant AI diagnostics with risk scores, chat with an AI health assistant, watch personalized AI doctor video explanations — all with patient-controlled access management and zero-knowledge encryption.
 
 ---
 
@@ -19,7 +19,7 @@ The landing page is the entry point of **ClearPulse AI**. Here's what each part 
 | **Navbar** | Top bar with the ClearPulse AI logo — a custom ECG pulse-line SVG mark with `ClearPulse` in dark gray and `Pulse` in indigo — and navigation links. |
 | **Hero Badge** | A small pill badge reading *"Decentralized Healthcare Intelligence"* to communicate the core value proposition at a glance. |
 | **Hero Headline** | Bold `ClearPulse AI` title with the animated tagline *"Instant AI diagnostics from your reports."* — typed letter-by-letter for a dynamic feel. |
-| **Hero Description** | A brief paragraph explaining the four core features: report upload, AI analysis, AI chat, and AI video — all secured on-chain. |
+| **Hero Description** | A brief paragraph explaining the four core features: report upload, AI analysis, AI chat, and AI video — all secured via IPFS. |
 | **Animated DNA Helix** | A canvas-rendered 3D animated DNA double helix runs diagonally across the right side of the hero section — two intertwining strands with purple-to-pink gradient, base-pair rungs, node dots, and a soft glow effect. Animates continuously in the background without covering content. |
 | **SELECT YOUR ROLE** | Two cards that let users choose their journey: **Patient** or **Doctor**. |
 | **Patient Card** | Leads to the Patient Dashboard where users can upload reports, get AI analysis, talk to AI, and control data access. |
@@ -27,38 +27,21 @@ The landing page is the entry point of **ClearPulse AI**. Here's what each part 
 
 ---
 
-## 🔐 Patient Registration (Blockchain)
+## 🔐 Patient Registration
 
 ![Patient Registration](./screenshots/patientregistration.png)
 
-When a user selects **Patient** on the landing page, they are taken to the registration screen where their identity is anchored on-chain via MetaMask. Here's every element explained:
+When a user selects **Patient** on the landing page, they are taken to the registration screen. Here's every element explained:
 
-### Left Panel — Registration Form
+### Registration Form
 
 | Element | Description |
 |---------|-------------|
-| **ClearPulse AI Icon** | Blue layered logo icon confirming you're in the ClearPulse ecosystem |
+| **ClearPulse AI Icon** | Logo icon confirming you're in the ClearPulse ecosystem |
 | **"Join as Patient" Heading** | Confirms the role being registered — *Patient* |
 | **Subtitle** | *"You're registering as a patient"* — clear context for the user |
-| **Wallet Connected (green dot)** | Shows the MetaMask wallet is successfully connected. Displays the truncated wallet address (`0xf39Fd6e5...2266`) with a **Disconnect** button to switch accounts |
 | **"Registering as Patient" Info Box** | Describes what patient access unlocks: *"You can upload reports, get AI analysis, and control data access."* — sets expectations before confirming |
-| **CONFIRM IN METAMASK Button** | A prominent pink button that triggers the on-chain `registerPatient()` transaction. Clicking this opens the MetaMask popup |
-| **Gas Fee Warning** | Small text below: *"This will create a blockchain transaction to register your role. Gas fees may apply."* — transparent about cost |
-
-### Right Panel — MetaMask Transaction Popup
-
-| Element | Description |
-|---------|-------------|
-| **"Transfer request" Header** | MetaMask's label for the triggered smart contract call |
-| **0 ETH** | Confirms this is a **zero-value transaction** — no ETH is being transferred, only the registration function is called |
-| **From → To** | Shows the patient's imported wallet sending to the smart contract address (`0x5FbDB...80...`) |
-| **Network: Localhost 8545** | The Hardhat local blockchain network — for demo/testing purposes |
-| **Request from: localhost:3001** | The frontend app (Next.js dev server) that initiated the transaction request |
-| **Network fee: ~0 ETH / $0.07** | The gas cost is minimal — just enough to write the registration to the blockchain |
-| **Speed** | Transaction speed selector (configurable) |
-| **Cancel / Confirm Buttons** | User can cancel or confirm the blockchain registration — clicking **Confirm** calls `registerPatient()` on `ClearPulseRecords.sol` and redirects to the Patient Dashboard |
-
-> **Why blockchain registration?** Storing roles on-chain ensures that only verified, wallet-authenticated patients and doctors can interact with sensitive medical data. No central authority can modify or revoke roles without the user's private key.
+| **CONFIRM Button** | A prominent button that completes registration and redirects to the Patient Dashboard |
 
 ---
 
@@ -84,7 +67,7 @@ At the top of the dashboard, a horizontal tab bar lets patients switch between a
 | **3D Anatomy** | Interactive 3D body viewer to explore affected regions |
 | **AI Chat** | Chat with an AI health assistant |
 | **Video Consult** | AI doctor avatar video explanation |
-| **Data Access** | Grant/Revoke blockchain-based doctor access |
+| **Data Access** | Grant/Revoke doctor access to your records |
 | **Appointments** | View and manage booked appointments |
 
 #### Report Header Card
@@ -94,8 +77,8 @@ At the top of the dashboard, a horizontal tab bar lets patients switch between a
 | **Filename** | `hearth issue.pdf` — the original uploaded report name |
 | **CRITICAL PRIORITY Badge** | Red badge automatically assigned based on the AI risk score — alerts patient of urgency |
 | **Date** | `2/22/2026` — date the report was uploaded and analyzed |
-| **Record ID** | `077e792f...` — short hash of the on-chain record for traceability |
-| **View Original Report →** | Link to open the raw uploaded PDF from InsForge storage |
+| **Record ID** | `077e792f...` — short hash of the record for traceability |
+| **View Original Report →** | Link to open the raw uploaded PDF from IPFS storage |
 | **Risk Score Gauge** | Large circular gauge showing `90 / 100 — CRITICAL` in red, giving an instant visual severity reading |
 
 #### Executive Summary
@@ -115,14 +98,14 @@ Numbered, actionable steps generated by AI:
 | 2 | Regular monitoring of blood sugar and blood pressure with dietary adjustments |
 | 3 | Engage in a physician-approved, gentle exercise program to improve cardiac health |
 
-#### Recommended Specialist & Blockchain Verification
+#### Recommended Specialist & Verification
 
 | Element | Description |
 |---------|-------------|
 | **Recommended Specialist** | `Cardiologist` — AI-matched specialist based on detected conditions |
 | **Find a Doctor →** | Link that routes to appointment booking pre-filtered for cardiologists |
-| **Blockchain Verification — HASH** | SHA-256 hash of the report stored on-chain (`0x888dd0f...`) — proves the report hasn't been tampered with |
-| **TRANSACTION** | The Ethereum transaction ID (`0x84865335...`) of the `storeRecord()` call that wrote the hash to the blockchain |
+| **Verification — HASH** | SHA-256 hash of the report stored on IPFS (`0x888dd0f...`) — proves the report hasn't been tampered with |
+| **IPFS CID** | The IPFS content identifier (`0x84865335...`) of the `storeRecord()` call that pinned the report to IPFS |
 
 ### 📈 Health Analytics Tab
 
@@ -261,23 +244,23 @@ Clicking any organ on the 3D model (or in the sidebar) opens a detailed right-si
 
 > The exploded organ view (left side) shows isolated Brain, Lungs, Kidneys, Liver, and Gut — allowing the patient to visually understand which organs are affected without medical training.
 
-### 🔐 Data Access Tab — Blockchain Access Control
+### 🔐 Data Access Tab — Access Control
 
 ![Data Access — Manage Access](./screenshots/dataacess.png)
 
-The **Data Access** tab gives patients full, sovereign control over who can view their medical records. Every grant and revocation is executed as an on-chain transaction — no central authority can override it.
+The **Data Access** tab gives patients full, sovereign control over who can view their medical records. Records are stored on IPFS and access is managed server-side — no doctor can view records without the patient's explicit grant.
 
 | Element | Description |
 |---------|-------------|
 | **MANAGE ACCESS header** | Orange lock icon with the title *"MANAGE ACCESS — Control who views this medical record"* — clearly communicates the purpose of the tab |
 | **SELECT A DOCTOR… Dropdown** | Dropdown listing all registered doctors on the platform — patient picks who to grant access to |
-| **SELECT A DOCTOR FIRST button** | Disabled action button that activates once a doctor is selected — triggers a blockchain `grantAccess()` transaction via MetaMask |
-| **✅ ACCESS GRANTED TO M V DEEPAK** | Bright green confirmation banner — appears immediately after a successful on-chain grant transaction confirming the doctor now has access |
+| **SELECT A DOCTOR FIRST button** | Disabled action button that activates once a doctor is selected — triggers the access grant |
+| **✅ ACCESS GRANTED TO M V DEEPAK** | Bright green confirmation banner — appears immediately after a successful grant confirming the doctor now has access |
 | **GRANTED DOCTORS panel** | Lists all doctors who currently have active access to this record |
-| **Doctor entry — M V Deepak** | Shows the doctor's name and truncated wallet address (`0XFABB0A...51694A`) for on-chain identity verification |
-| **REVOKE button** | Red button next to each granted doctor — triggers a `revokeAccess()` blockchain transaction to instantly remove that doctor's access |
+| **Doctor entry — M V Deepak** | Shows the doctor's name and identifier for verification |
+| **REVOKE button** | Red button next to each granted doctor — instantly removes that doctor's access |
 
-> All access control is enforced on-chain via the `ClearPulseRecords.sol` smart contract — records are cryptographically inaccessible to any doctor not explicitly granted access by the patient.
+> Records are pinned to IPFS and access is cryptographically scoped — only doctors explicitly granted access by the patient can retrieve the content.
 
 ### 📅 Book Appointment — 3-Step Booking Flow
 
@@ -349,7 +332,7 @@ Once confirmed, the wizard shows a success screen:
 
 ![Doctor Dashboard](./screenshots/doctordash.png)
 
-The Doctor Dashboard gives verified doctors a clean, clinical view of all patient records explicitly shared with them via on-chain access grants.
+The Doctor Dashboard gives verified doctors a clean, clinical view of all patient records explicitly shared with them.
 
 ### Header
 
@@ -357,7 +340,6 @@ The Doctor Dashboard gives verified doctors a clean, clinical view of all patien
 |---------|-------------|
 | **"Dr. shreeharsha Dashboard"** | Personalized heading with the doctor's name — *"Manage your patients, appointments, and medical records"* |
 | **Complete Profile button** | Top-right CTA to fill in specialty, bio, and contact details shown to patients during booking |
-| **Wallet pill** | Connected wallet indicator (`0xf39F...2266`) with a **Disconnect** button |
 
 ### Stats Bar
 
@@ -383,7 +365,7 @@ Four at-a-glance metric cards across the top:
 | Element | Description |
 |---------|-------------|
 | **"Shared Records" panel** | Lists every record the patient has granted access to, with a blue count badge (`1`) |
-| **Record entry — `lab 2`** | Shows the filename, risk score badge `RS: 10`, the patient's truncated wallet (`0xFABB...694a`), and grant date (`Granted 2/21/2026`) |
+| **Record entry — `lab 2`** | Shows the filename, risk score badge `RS: 10`, the patient's identifier, and grant date (`Granted 2/21/2026`) |
 | **Selected state** | The active record is highlighted with a blue background in the sidebar |
 
 ### AI Analysis Panel (Right)
@@ -392,7 +374,7 @@ Clicking a record loads the full AI analysis on the right:
 
 | Element | Description |
 |---------|-------------|
-| **Report header** | Filename `lab 2.pdf` with a `LOW` green urgency badge, patient wallet (`0xFABB0a...694a`), and upload timestamp (`Uploaded 2/21/2026`) |
+| **Report header** | Filename `lab 2.pdf` with a `LOW` green urgency badge, patient identifier, and upload timestamp (`Uploaded 2/21/2026`) |
 | **Risk Score gauge** | Circular gauge showing `10 / 100` — green, indicating low risk |
 | **AI Executive Summary** | Full AI-generated paragraph in plain English: *"The patient's recent whole abdomen ultrasound provided reassuring results, indicating all examined organs — liver, gall bladder, pancreas, spleen, aorta — appear healthy and within normal limits…"* |
 | **Indicators panel** | Right-side card showing extracted clinical indicators — `No conditions isolated` for this low-risk report |
@@ -414,7 +396,7 @@ Cards shown for every appointment awaiting doctor confirmation, with a `NEEDS RE
 |---------|-------------|
 | **`NEEDS REVIEW` badge** | Amber pill label — indicates the doctor has not yet responded to this booking request |
 | **Date & Time** | Appointment date and requested time (e.g. `Sun, Feb 22, 2026 · 09:00:00`) |
-| **Patient wallet** | Full patient wallet address for identity verification (e.g. `0xf39Fd6e51aad88F6F4ce6aB8827279cfffb92266`) |
+| **Patient identifier** | Patient's ID shown for reference |
 | **Reason** | Optional note from the patient — e.g. *"I have headache"* (shown on the third pending card) |
 | **Confirm Booking** | Blue CTA — marks the appointment as confirmed and notifies the patient |
 | **Decline** | Outlined button — rejects the appointment request |
@@ -434,7 +416,7 @@ A chronological timeline of all appointments (confirmed + pending) — `3 total`
 |---------|-------------|
 | **Time circle avatar** | Circular badge showing the appointment hour (e.g. `09 HH`, `12 HH`, `10 HH`) for quick scanning |
 | **Date & Time** | Full datetime of each appointment (e.g. `Sun, Feb 22, 2026 • 09:00:00`) |
-| **Patient wallet** | Truncated wallet address (e.g. `0xf39F...`) |
+| **Patient identifier** | Truncated patient ID |
 | **Reason snippet** | Patient's note shown inline where provided (e.g. `I have headache`) |
 | **`PENDING` badge** | Amber status badge — all 3 appointments still pending doctor confirmation |
 
@@ -454,10 +436,9 @@ The **Provider Profile** tab lets doctors set up their public-facing profile —
 | **Full Professional Name** | Text input pre-filled with the doctor's name (e.g. `shreeharsha`) |
 | **Primary Specialty** | Dropdown selector for specialty (e.g. `General Practice`) — the chosen specialty is what appears on the doctor's card in the patient booking grid |
 | **Professional Bio** | Free-text area for a short professional description (e.g. `medicine`) — shown as the bio excerpt on doctor cards |
-| **Connected Wallet** | Read-only field displaying the doctor's full MetaMask wallet address (`0xf39Fd6e51aad88F6F4ce6aB8827279cfffb92266`) with a lock icon — non-editable, tied to on-chain identity |
-| **Save Profile Settings** | Full-width blue button that persists all changes to the InsForge database |
+| **Save Profile Settings** | Full-width blue button that persists all changes to the database |
 
-> Profile data is stored off-chain in InsForge but the wallet address is the canonical on-chain identity — patients grant record access to this wallet via smart contract.
+> Profile data is stored securely — patients see the doctor's name, specialty, and bio when browsing or booking appointments.
 
 ---
 
@@ -500,25 +481,26 @@ The navbar logo was redesigned from a generic blue rounded-square icon to a cust
 ## 🏗️ Architecture
 | Layer | Tech |
 |-------|------|
-| **Frontend** | Next.js 15, TypeScript, TailwindCSS, ethers.js |
-| **Backend** | InsForge (PostgreSQL, Storage, AI, Edge Functions) |
-| **Blockchain** | Solidity, Hardhat, MetaMask |
-| **AI Services** | InsForge AI (Claude), Tavus Avatar API |
+| **Frontend** | Next.js 15, TypeScript, TailwindCSS |
+| **Backend** | FastAPI (Python), PostgreSQL |
+| **Storage** | IPFS (decentralized file storage) |
+| **AI Services** | Gemini, Groq, Tavus Avatar API, Sarvam |
+| **Auth** | Clerk |
 
 ### System Flow
 
 ```
-Patient (MetaMask) ──► Upload Report ──► InsForge Storage
-                                              │
-                                    analyze-report (Edge Fn)
-                                    AI extracts text + analysis
-                                              │
-                              SHA-256 hash ──► Blockchain (Solidity)
-                                              │
-                          Patient views analysis, chats with AI,
-                          watches AI doctor video, manages access
-                                              │
-                          Doctor (granted access) ──► Views records
+Patient ──► Upload Report ──► IPFS Storage (pinned)
+                                    │
+                          FastAPI Backend (Python)
+                          AI extracts text + analysis
+                                    │
+                    SHA-256 hash ──► IPFS record (tamper-proof)
+                                    │
+                Patient views analysis, chats with AI,
+                watches AI doctor video, manages access
+                                    │
+                Doctor (granted access) ──► Views records
 ```
 
 ---
@@ -533,33 +515,31 @@ npm install
 npm run dev        # → http://localhost:3000
 ```
 
-### 2. Blockchain (optional, for on-chain features)
+### 2. Backend
 
 ```bash
-cd blockchain
-npm install
-npx hardhat node                                          # Terminal 1
-npx hardhat run scripts/deploy.ts --network localhost     # Terminal 2
-```
-
-Copy the deployed contract address to `frontend/.env`:
-```
-NEXT_PUBLIC_CONTRACT_ADDRESS=0xYourDeployedAddress
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
 ```
 
 ### 3. Environment Variables
 
 **`frontend/.env`**:
 ```
-NEXT_PUBLIC_INSFORGE_BASE_URL=https://afhtz3nj.us-west.insforge.app
-NEXT_PUBLIC_INSFORGE_ANON_KEY=<your-anon-key>
-NEXT_PUBLIC_CONTRACT_ADDRESS=<deployed-contract-address>
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=<your-clerk-key>
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 ```
 
-**InsForge Edge Function environment** (set in InsForge dashboard):
+**`backend/.env`**:
 ```
+GEMINI_API_KEY=<your-gemini-key>
+GROQ_API_KEY=<your-groq-key>
 TAVUS_API_KEY=<your-tavus-api-key>
 TAVUS_REPLICA_ID=<your-tavus-replica-id>
+IPFS_API_KEY=<your-ipfs-key>
 ```
 
 ---
@@ -567,11 +547,25 @@ TAVUS_REPLICA_ID=<your-tavus-replica-id>
 ## 📁 Project Structure
 
 ```
-medicare-hackaleague/
-├── blockchain/                     # Smart contract
-│   ├── contracts/ClearPulseRecords.sol
-│   ├── scripts/deploy.ts
-│   └── hardhat.config.ts
+ClearPulse/
+├── backend/                        # FastAPI Python backend
+│   ├── main.py                     # App entry point
+│   ├── requirements.txt
+│   ├── routes/
+│   │   ├── analyze.py              # AI report analysis
+│   │   ├── chatbot.py              # AI chat
+│   │   ├── appointments.py         # Appointment management
+│   │   ├── doctor.py               # Doctor routes
+│   │   ├── records.py              # Medical records
+│   │   ├── ipfs.py                 # IPFS storage
+│   │   ├── triage.py               # Triage AI
+│   │   └── tavus.py                # AI video
+│   └── services/
+│       ├── gemini.py               # Gemini AI service
+│       ├── groq_client.py          # Groq AI service
+│       ├── sarvam.py               # Sarvam service
+│       ├── tavus.py                # Tavus video service
+│       └── vault.py                # Secure storage
 ├── frontend/                       # Next.js App Router
 │   └── src/
 │       └── app/
@@ -585,33 +579,18 @@ medicare-hackaleague/
 │           │       └── AccessManager.tsx
 │           └── doctor/
 │               └── page.tsx        # Doctor dashboard
-├── functions/                      # InsForge Edge Functions
-│   ├── analyze-report.js           # AI report analysis
-│   ├── medical-chatbot.js          # AI chat backend
-│   └── tavus-video.js              # AI doctor video generation
 └── screenshots/                    # Website screenshots (for README)
 ```
 
 ---
 
-## 🧠 InsForge Backend
+## 🗄️ Backend Services
 
-- **Database tables**: `users`, `analyses`, `chat_history`, `access_grants`, `appointments`
-- **Storage**: `medical-reports` bucket (private, patient-scoped)
-- **Edge Functions**: `analyze-report`, `medical-chatbot`, `tavus-video`
-
----
-
-## ⛓️ Smart Contract (`ClearPulseRecords.sol`)
-
-| Function | Description |
-|----------|-------------|
-| `registerPatient()` | Register the caller as a patient |
-| `registerDoctor()` | Register the caller as a doctor |
-| `storeRecord(hash)` | Store SHA-256 hash of a medical report on-chain |
-| `grantAccess(doctor)` | Allow a doctor address to view patient records |
-| `revokeAccess(doctor)` | Remove a doctor's access |
-| `emergencyAccess(...)` | Log emergency access event for auditing |
+- **AI Analysis**: Gemini & Groq power report analysis, triage, and chatbot responses
+- **IPFS Storage**: Medical reports are pinned to IPFS via the `/api/ipfs` route — content-addressed, tamper-proof, and decentralized
+- **Tavus**: AI doctor avatar video generation personalised to each patient's diagnosis
+- **Sarvam**: Multilingual support for regional language interactions
+- **Vault**: Secure key management for encrypted record access
 
 ---
 
@@ -619,10 +598,10 @@ medicare-hackaleague/
 
 - **Zero-Knowledge Encryption Pipeline**: Encryption keys are manually entered and locally managed by the patient. Keys are never stored in the database or sent to the backend, ensuring absolute data privacy.
 - **Local PDF Processing**: Text extraction from uploaded PDF files is handled securely in the browser using `pdfjs-dist`, preventing sensitive raw files from unnecessary transit.
-- **Private Storage**: Medical reports are powerfully encrypted and stored securely in InsForge storage — only accessible to the authenticated patient.
-- **On-chain Access Control**: No doctor can read records without the patient's explicit blockchain transaction.
-- **Cryptographic Verification**: SHA-256 hashes stored on-chain ensure report integrity (tamper-proof verification).
-- **Edge Analytics**: AI analysis leverages secure Edge Functions — raw data isn't exposed to third-party databases.
+- **IPFS Storage**: Medical reports are pinned to IPFS — content-addressed and decentralized. Only patients with the correct CID and decryption key can access their data.
+- **Access Control**: No doctor can read records without the patient's explicit grant. Access is scoped per-record and can be revoked at any time.
+- **Cryptographic Verification**: SHA-256 hashes stored on IPFS ensure report integrity — tamper-proof verification without a central authority.
+- **Secure AI Pipeline**: AI analysis runs server-side via FastAPI — raw report data is never exposed to third-party databases.
 
 ---
 
