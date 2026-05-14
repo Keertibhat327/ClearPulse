@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════
+# ClearPulse - Render Blueprint
+# ═══════════════════════════════════════════════════════════════
+# This file enables one-click deployment to Render
+# Usage: https://dashboard.render.com/select-repo
+# ═══════════════════════════════════════════════════════════════
+
+services:
+  # Backend API Service
+  - type: web
+    name: clearpulse-backend
+    runtime: python
+    region: oregon # Change to your preferred region
+    plan: free # Options: free, starter, standard
+    branch: main
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      # AI Services
+      - key: GOOGLE_API_KEY
+        sync: false # Set manually in Render dashboard
+      - key: GROQ_API_KEY
+        sync: false
+      
+      # Database & Storage
+      - key: INSFORGE_BASE_URL
+        sync: false
+      - key: INSFORGE_SERVICE_KEY
+        sync: false
+      
+      # Video AI
+      - key: TAVUS_API_KEY
+        sync: false
+      - key: TAVUS_REPLICA_ID
+        sync: false
+      
+      # Voice AI
+      - key: SARVAM_API_KEY
+        sync: false
+      
+      # IPFS Storage
+      - key: PINATA_API_KEY
+        sync: false
+      - key: PINATA_SECRET_KEY
+        sync: false
+      - key: PINATA_GATEWAY
+        value: https://gateway.pinata.cloud/ipfs
+      
+      # Security
+      - key: VAULT_MASTER_KEY
+        generateValue: true # Auto-generate random key
+      - key: SECRET_KEY
+        generateValue: true
+      
+      # CORS - Update after deploying frontend
+      - key: ALLOWED_ORIGINS
+        value: https://clearpulse.vercel.app
+      
+      # Environment
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      
+      # Python Version
+      - key: PYTHON_VERSION
+        value: 3.11
+
+# ═══════════════════════════════════════════════════════════════
+# DEPLOYMENT INSTRUCTIONS
+# ═══════════════════════════════════════════════════════════════
+#
+# 1. Push this file to your GitHub repository
+# 2. Go to: https://dashboard.render.com/select-repo
+# 3. Select your ClearPulse repository
+# 4. Render will detect this file and configure automatically
+# 5. Fill in the environment variables marked as "sync: false"
+# 6. Click "Apply" to deploy
+#
+# After deployment:
+# 7. Copy your backend URL (e.g., https://clearpulse-backend.onrender.com)
+# 8. Deploy frontend to Vercel with NEXT_PUBLIC_API_URL set to your backend URL
+# 9. Update ALLOWED_ORIGINS in Render with your Vercel URL
+#
+# ═══════════════════════════════════════════════════════════════
