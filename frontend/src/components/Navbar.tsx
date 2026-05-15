@@ -13,18 +13,24 @@ export default function Navbar() {
                     {/* Logo mark: pulse line + circle */}
                     <svg width="38" height="28" viewBox="0 0 38 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         {/* Flat baseline */}
-                        <path d="M1 14 H8" stroke="#6366f1" strokeWidth="2" strokeLinecap="round"/>
+                        <path d="M1 14 H8" stroke="url(#pulse-grad)" strokeWidth="2" strokeLinecap="round"/>
                         {/* Pulse spike */}
-                        <path d="M8 14 L12 5 L16 22 L20 10 L23 14" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M8 14 L12 5 L16 22 L20 10 L23 14" stroke="url(#pulse-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         {/* Flat tail */}
-                        <path d="M23 14 H29" stroke="#6366f1" strokeWidth="2" strokeLinecap="round"/>
+                        <path d="M23 14 H29" stroke="url(#pulse-grad)" strokeWidth="2" strokeLinecap="round"/>
                         {/* Circle at end — the "pulse dot" */}
-                        <circle cx="33" cy="14" r="4" fill="#6366f1" opacity="0.15"/>
-                        <circle cx="33" cy="14" r="2.2" fill="#6366f1"/>
+                        <circle cx="33" cy="14" r="4" fill="#c084fc" opacity="0.2"/>
+                        <circle cx="33" cy="14" r="2.2" fill="url(#pulse-grad)"/>
+                        <defs>
+                            <linearGradient id="pulse-grad" x1="1" y1="14" x2="38" y2="14" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stopColor="#818cf8" />
+                                <stop offset="100%" stopColor="#c084fc" />
+                            </linearGradient>
+                        </defs>
                     </svg>
                     {/* Wordmark */}
                     <span className="text-[1.1rem] font-bold tracking-tight text-gray-900 group-hover:text-gray-700 transition-colors">
-                        Clear<span className="text-indigo-500">Pulse</span>
+                        Clear<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-purple-400">Pulse</span>
                     </span>
                 </Link>
 
