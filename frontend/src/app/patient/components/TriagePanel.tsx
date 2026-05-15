@@ -53,6 +53,7 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
     const [careRecommendations, setCareRecommendations] = useState<string[]>([]);
     const [symptomSummary, setSymptomSummary] = useState('');
     const [sessionComplete, setSessionComplete] = useState(false);
+    const [sttError, setSttError] = useState('');
 
     // Voice: always attempt — backend will return 503 if not configured
     const [selectedLanguage, setSelectedLanguage] = useState('en-IN');
@@ -102,6 +103,7 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
 
     // ─── STT recording ────────────────────────────────────────────────────
     const startRecording = async () => {
+        setSttError('');
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
@@ -159,11 +161,17 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
                 const data = await res.json();
                 if (data.transcript) {
                     setInput(data.transcript);
+                    setSttError('');
+                } else {
+                    setSttError('No speech detected. Please speak clearly and try again.');
                 }
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                setSttError(errData.detail || `Voice service error (${res.status}). Please type instead.`);
             }
         } catch (err) {
             console.error('STT failed:', err);
-            alert('Voice transcription is unavailable. Please type your symptoms instead.');
+            setSttError('Could not reach voice service. Please type your symptoms.');
         } finally {
             setIsTyping(false);
         }
@@ -336,6 +344,11 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
 
                     {isRecording && (
                         <p className="text-xs text-red-500 font-medium mt-2 text-center animate-pulse">🔴 Recording… release to transcribe</p>
+                    )}
+                    {sttError && !isRecording && (
+                        <p className="text-xs text-amber-600 font-medium mt-2 text-center bg-amber-50 rounded-lg py-1.5 px-3">
+                            ⚠️ {sttError}
+                        </p>
                     )}
                     {sessionComplete && (
                         <p className="text-xs text-gray-400 font-medium mt-2 text-center">Assessment complete. See your care plan →</p>
