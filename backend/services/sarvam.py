@@ -70,10 +70,8 @@ async def transcribe_audio(audio_bytes: bytes, language_code: str = "hi-IN", fil
             headers={"api-subscription-key": SARVAM_API_KEY},
             files={"file": (filename, audio_bytes, content_type)},
             data={
-                "model": "saarika:v2.5",
+                "model": "saaras:v3",
                 "language_code": language_code,
-                "with_timestamps": "false",
-                "with_disfluencies": "false",
             },
         )
 
