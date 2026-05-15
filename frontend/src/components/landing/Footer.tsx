@@ -13,14 +13,26 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                     {/* Brand */}
                     <div>
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
-                            </div>
-                            <span className="text-lg font-bold text-black font-mono">MediChain AI</span>
+                        <div className="flex items-center gap-2 mb-4">
+                            <svg width="38" height="28" viewBox="0 0 38 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M1 14 H8" stroke="url(#footer-pulse-grad)" strokeWidth="2" strokeLinecap="round"/>
+                                <path d="M8 14 L12 5 L16 22 L20 10 L23 14" stroke="url(#footer-pulse-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M23 14 H29" stroke="url(#footer-pulse-grad)" strokeWidth="2" strokeLinecap="round"/>
+                                <circle cx="33" cy="14" r="4" fill="#c084fc" opacity="0.2"/>
+                                <circle cx="33" cy="14" r="2.2" fill="url(#footer-pulse-grad)"/>
+                                <defs>
+                                    <linearGradient id="footer-pulse-grad" x1="1" y1="14" x2="38" y2="14" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stopColor="#818cf8" />
+                                        <stop offset="100%" stopColor="#c084fc" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <span className="text-lg font-bold text-gray-900 font-mono">
+                                Clear<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-purple-400">Pulse</span> AI
+                            </span>
                         </div>
                         <p className="text-sm text-gray-600 font-medium leading-relaxed">
-                            AI-powered medical analysis secured by blockchain technology. Your health data, your control.
+                            AI-powered medical analysis secured via IPFS. Your health data, your control.
                         </p>
                     </div>
 
@@ -84,8 +96,8 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="section-divider mb-6" />
                 <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-                    <p className="text-xs text-gray-500 font-medium">© {new Date().getFullYear()} MediChain AI. For educational purposes only. Not medical advice.</p>
-                    <p className="text-xs text-gray-400 font-mono">Built with ❤️ on Ethereum</p>
+                    <p className="text-xs text-gray-500 font-medium">© {new Date().getFullYear()} ClearPulse AI. For educational purposes only. Not medical advice.</p>
+                    <p className="text-xs text-gray-400 font-mono">Built with ❤️ for healthcare</p>
                 </div>
             </div>
         </footer>
