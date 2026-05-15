@@ -873,7 +873,7 @@ export default function DoctorDashboard() {
                         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
                             <div className="flex items-center gap-4 mb-8">
                                 <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center text-2xl shrink-0">
-                                    ≡ƒæ¿ΓÇìΓÜò∩╕Å
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-semibold text-gray-900">Provider Settings</h2>
