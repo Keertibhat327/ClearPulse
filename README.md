@@ -27,21 +27,30 @@ The landing page is the entry point of **ClearPulse AI**. Here's what each part 
 
 ---
 
-## 🔐 Patient Registration
+## 🔐 Authentication — Clerk Sign In
 
-![Patient Registration](./screenshots/patientregistration.png)
+![Clerk Sign In](./screenshots/clerk-signin.png)
 
-When a user selects **Patient** on the landing page, they are taken to the registration screen. Here's every element explained:
-
-### Registration Form
+When a user clicks **Get Started**, a Clerk-powered sign-in modal appears. Users can authenticate via Google or email.
 
 | Element | Description |
 |---------|-------------|
-| **ClearPulse AI Icon** | Logo icon confirming you're in the ClearPulse ecosystem |
-| **"Join as Patient" Heading** | Confirms the role being registered — *Patient* |
-| **Subtitle** | *"You're registering as a patient"* — clear context for the user |
-| **"Registering as Patient" Info Box** | Describes what patient access unlocks: *"You can upload reports, get AI analysis, and control data access."* — sets expectations before confirming |
-| **CONFIRM Button** | A prominent button that completes registration and redirects to the Patient Dashboard |
+| **"Sign in to MediChain AI"** | Modal title with welcome subtitle |
+| **Continue with Google** | One-click Google OAuth — fastest way to sign in |
+| **Email address field** | Alternative email/password sign-in |
+| **Continue button** | Submits credentials and proceeds to the dashboard |
+| **Secured by Clerk** | Trust badge confirming authentication is handled by Clerk |
+
+![Clerk Logged In](./screenshots/clerk-loggedin.png)
+
+Once signed in, the user's avatar appears in the navbar. Clicking it opens the Clerk user menu:
+
+| Element | Description |
+|---------|-------------|
+| **User name & email** | Displays the signed-in user's name and email |
+| **Manage account** | Opens Clerk's account management panel |
+| **Sign out** | Ends the session and returns to the landing page |
+| **Secured by Clerk** | Confirms session management is handled by Clerk |
 
 ---
 
