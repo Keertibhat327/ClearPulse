@@ -5,7 +5,7 @@ import { useInView } from '@/hooks/useInView';
 
 const steps = [
     { step: '01', title: 'Choose Your Role', desc: 'Are you a patient or a doctor? Pick your role to get started.', color: 'bg-retro-accent-pink' },
-    { step: '02', title: 'Connect Wallet', desc: 'Link your MetaMask wallet — your wallet is your secure identity.', color: 'bg-retro-accent-green' },
+    { step: '02', title: 'Connect Clerk', desc: 'Authenticate with Google — your identity is securely managed by Clerk.', color: 'bg-retro-accent-green' },
     { step: '03', title: 'Upload Report', desc: 'Patients drag and drop medical reports (PDF, images).', color: 'bg-retro-accent-yellow' },
     { step: '04', title: 'AI Analysis', desc: 'AI extracts text, analyzes conditions, generates risk score and specialist recommendations.', color: 'bg-indigo-200' },
     { step: '05', title: 'Explore Results', desc: 'Chat with AI assistant, talk to AI doctor, and manage who can access your records.', color: 'bg-cyan-200' },
