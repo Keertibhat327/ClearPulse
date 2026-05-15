@@ -106,36 +106,41 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
         setSttError('');
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            
-            // Automatically select the best supported mimeType for cross-browser compatibility (Safari vs Chrome)
-            let mimeType = 'audio/webm';
+
+            // Prefer webm/opus — it's reliably parsed by Sarvam.
+            // Only fall back to mp4 for Safari which doesn't support webm at all.
+            let mimeType = '';
             if (typeof MediaRecorder.isTypeSupported === 'function') {
-                if (MediaRecorder.isTypeSupported('audio/mp4')) {
-                    mimeType = 'audio/mp4';
-                } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
                     mimeType = 'audio/webm;codecs=opus';
+                } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+                    mimeType = 'audio/webm';
+                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                    mimeType = 'audio/mp4'; // Safari fallback only
                 }
-            } else {
-                mimeType = ''; // Let browser default
             }
-            
+
             const options = mimeType ? { mimeType } : undefined;
             const recorder = new MediaRecorder(stream, options);
-            
+
             audioChunksRef.current = [];
             recorder.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
             recorder.onstop = async () => {
                 stream.getTracks().forEach(t => t.stop());
-                const actualMimeType = recorder.mimeType || 'audio/webm';
+                const actualMimeType = recorder.mimeType || mimeType || 'audio/webm';
                 const blob = new Blob(audioChunksRef.current, { type: actualMimeType });
+                if (blob.size < 500) {
+                    setSttError('Recording was too short. Please hold and speak clearly.');
+                    return;
+                }
                 await transcribeAudio(blob, actualMimeType);
             };
-            recorder.start();
+            recorder.start(100); // collect chunks every 100ms for reliability
             mediaRecorderRef.current = recorder;
             setIsRecording(true);
         } catch (err) {
             console.error('Microphone access denied:', err);
-            alert('Please allow microphone access to use voice input.');
+            setSttError('Microphone access denied. Please allow microphone access in your browser.');
         }
     };
 
