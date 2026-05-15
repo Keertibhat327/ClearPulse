@@ -7,7 +7,7 @@ import os
 import httpx
 from dotenv import load_dotenv
 
-load_dotenv(override=True)
+# SARVAM_API_KEY is loaded globally in main.py via load_dotenv()
 
 SARVAM_API_KEY = os.getenv("SARVAM_API_KEY", "")
 SARVAM_BASE_URL = "https://api.sarvam.ai"
