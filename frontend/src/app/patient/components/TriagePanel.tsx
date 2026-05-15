@@ -117,13 +117,29 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
         if (!sarvamAvailable) return;
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            
+            // Automatically select the best supported mimeType for cross-browser compatibility (Safari vs Chrome)
+            let mimeType = 'audio/webm';
+            if (typeof MediaRecorder.isTypeSupported === 'function') {
+                if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                    mimeType = 'audio/mp4';
+                } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                    mimeType = 'audio/webm;codecs=opus';
+                }
+            } else {
+                mimeType = ''; // Let browser default
+            }
+            
+            const options = mimeType ? { mimeType } : undefined;
+            const recorder = new MediaRecorder(stream, options);
+            
             audioChunksRef.current = [];
             recorder.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
             recorder.onstop = async () => {
                 stream.getTracks().forEach(t => t.stop());
-                const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-                await transcribeAudio(blob);
+                const actualMimeType = recorder.mimeType || 'audio/webm';
+                const blob = new Blob(audioChunksRef.current, { type: actualMimeType });
+                await transcribeAudio(blob, actualMimeType);
             };
             recorder.start();
             mediaRecorderRef.current = recorder;
@@ -141,11 +157,12 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
         }
     };
 
-    const transcribeAudio = async (blob: Blob) => {
+    const transcribeAudio = async (blob: Blob, mimeType: string = 'audio/webm') => {
         try {
             setIsTyping(true);
             const formData = new FormData();
-            formData.append('audio', blob, 'recording.webm');
+            const extension = mimeType.includes('mp4') ? 'mp4' : 'webm';
+            formData.append('audio', blob, `recording.${extension}`);
             formData.append('language_code', selectedLanguage);
             const res = await fetch(`${API_URL}/api/triage/stt`, {
                 method: 'POST',
