@@ -54,25 +54,16 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
     const [symptomSummary, setSymptomSummary] = useState('');
     const [sessionComplete, setSessionComplete] = useState(false);
 
-    // Voice
+    // Voice: always attempt — backend will return 503 if not configured
     const [selectedLanguage, setSelectedLanguage] = useState('en-IN');
     const [isRecording, setIsRecording] = useState(false);
     const [ttsEnabled, setTtsEnabled] = useState(false);
     const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-    const [sarvamAvailable, setSarvamAvailable] = useState<boolean | null>(true); // Optimistic default
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const endOfMessagesRef = useRef<HTMLDivElement>(null);
     const currentAudioRef = useRef<HTMLAudioElement | null>(null);
-
-    // Check if Sarvam is configured on mount
-    useEffect(() => {
-        fetch(`${API_URL}/api/triage/languages`)
-            .then(r => r.json())
-            .then(d => setSarvamAvailable(d.sarvam_configured))
-            .catch(() => setSarvamAvailable(false));
-    }, []);
 
     useEffect(() => {
         endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -80,7 +71,7 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
 
     // ─── TTS playback ─────────────────────────────────────────────────────
     const playTTS = useCallback(async (text: string) => {
-        if (!ttsEnabled || !sarvamAvailable) return;
+        if (!ttsEnabled) return;
         try {
             setIsPlayingAudio(true);
             const res = await fetch(`${API_URL}/api/triage/tts`, {
@@ -88,21 +79,18 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text, language_code: selectedLanguage }),
             });
-            if (!res.ok) return;
+            if (!res.ok) { setIsPlayingAudio(false); return; }
             const blob = await res.blob();
             const url = URL.createObjectURL(blob);
             const audio = new Audio(url);
             currentAudioRef.current = audio;
-            audio.onended = () => {
-                setIsPlayingAudio(false);
-                URL.revokeObjectURL(url);
-            };
+            audio.onended = () => { setIsPlayingAudio(false); URL.revokeObjectURL(url); };
             audio.onerror = () => setIsPlayingAudio(false);
             await audio.play();
         } catch {
             setIsPlayingAudio(false);
         }
-    }, [ttsEnabled, sarvamAvailable, selectedLanguage]);
+    }, [ttsEnabled, selectedLanguage]);
 
     const stopAudio = () => {
         if (currentAudioRef.current) {
@@ -114,7 +102,6 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
 
     // ─── STT recording ────────────────────────────────────────────────────
     const startRecording = async () => {
-        if (!sarvamAvailable) return;
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
@@ -176,6 +163,7 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
             }
         } catch (err) {
             console.error('STT failed:', err);
+            alert('Voice transcription is unavailable. Please type your symptoms instead.');
         } finally {
             setIsTyping(false);
         }
@@ -265,16 +253,14 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
                             </select>
                         </div>
 
-                        {/* TTS Toggle */}
-                        {sarvamAvailable && (
-                            <button
-                                onClick={() => { setTtsEnabled(p => !p); if (isPlayingAudio) stopAudio(); }}
-                                title={ttsEnabled ? 'Disable voice output' : 'Enable voice output'}
-                                className={`w-9 h-9 rounded-full flex items-center justify-center text-base transition-all border ${ttsEnabled ? 'bg-white text-blue-600 border-white shadow-sm' : 'bg-white/15 text-white border-white/20 hover:bg-white/25'}`}
-                            >
-                                {isPlayingAudio ? '⏹' : '🔊'}
-                            </button>
-                        )}
+                    {/* TTS Toggle — always visible */}
+                        <button
+                            onClick={() => { setTtsEnabled(p => !p); if (isPlayingAudio) stopAudio(); }}
+                            title={ttsEnabled ? 'Disable voice output' : 'Enable voice output'}
+                            className={`w-9 h-9 rounded-full flex items-center justify-center text-base transition-all border ${ttsEnabled ? 'bg-white text-blue-600 border-white shadow-sm' : 'bg-white/15 text-white border-white/20 hover:bg-white/25'}`}
+                        >
+                            {isPlayingAudio ? '⏹' : '🔊'}
+                        </button>
                     </div>
                 </div>
 
@@ -310,30 +296,28 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
                 {/* Input */}
                 <div className="p-4 border-t border-gray-100 bg-gray-50/50">
                     <div className="flex gap-2 items-end">
-                        {/* Mic button */}
-                        {sarvamAvailable && (
-                            <button
-                                onMouseDown={startRecording}
-                                onMouseUp={stopRecording}
-                                onTouchStart={startRecording}
-                                onTouchEnd={stopRecording}
-                                disabled={isTyping}
-                                title="Hold to record voice"
-                                className={`w-11 h-11 rounded-xl flex items-center justify-center text-base shrink-0 transition-all border ${isRecording
-                                    ? 'bg-red-500 text-white border-red-500 shadow-lg shadow-red-200 scale-110 animate-pulse'
-                                    : 'bg-white text-gray-500 border-gray-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
-                                    } disabled:opacity-40`}
-                            >
-                                🎤
-                            </button>
-                        )}
+                        {/* Mic button — always visible */}
+                        <button
+                            onMouseDown={startRecording}
+                            onMouseUp={stopRecording}
+                            onTouchStart={startRecording}
+                            onTouchEnd={stopRecording}
+                            disabled={isTyping}
+                            title="Hold to record voice"
+                            className={`w-11 h-11 rounded-xl flex items-center justify-center text-base shrink-0 transition-all border ${isRecording
+                                ? 'bg-red-500 text-white border-red-500 shadow-lg shadow-red-200 scale-110 animate-pulse'
+                                : 'bg-white text-gray-500 border-gray-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
+                                } disabled:opacity-40`}
+                        >
+                            🎤
+                        </button>
 
                         <input
                             type="text"
                             value={input}
                             onChange={e => setInput(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
-                            placeholder={sarvamAvailable ? 'Type or hold 🎤 to speak your symptoms...' : 'Describe your symptoms...'}
+                            placeholder="Type or hold 🎤 to speak your symptoms..."
                             disabled={isTyping || sessionComplete}
                             className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all disabled:opacity-50 placeholder-gray-400"
                             suppressHydrationWarning
