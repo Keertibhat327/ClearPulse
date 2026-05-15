@@ -6,8 +6,8 @@ import { Link2, Bot, MessageCircle, Video, Shield, BarChart3 } from 'lucide-reac
 const features = [
     {
         icon: Link2,
-        title: 'Blockchain Secured',
-        desc: 'Every medical record is hashed and stored on-chain with tamper-proof verification.',
+        title: 'IPFS Secured',
+        desc: 'Every medical record is hashed and stored on IPFS with tamper-proof verification.',
         accentColor: 'bg-indigo-100',
         hoverBorder: 'group-hover:border-l-indigo-500',
     },
