@@ -15,9 +15,10 @@ export default function DNABackground() {
     let t = 0;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -159,11 +160,10 @@ export default function DNABackground() {
       };
 
       // Glow pass (wide, very transparent)
+      // Removed ctx.filter = 'blur(6px)' for Chrome performance
       ctx.save();
-      ctx.filter = 'blur(6px)';
       drawStrand(s1, true);
       drawStrand(s2, true);
-      ctx.filter = 'none';
       ctx.restore();
 
       // Solid strands
