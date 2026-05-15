@@ -7,7 +7,7 @@ import { Heart, Stethoscope, ChevronDown } from 'lucide-react';
 
 export default function HeroSection() {
     return (
-        <section className="relative pt-32 pb-24 px-6 overflow-hidden min-h-[90vh] flex items-center justify-center bg-[#fdfbf7]">
+        <section className="relative pt-20 pb-8 px-6 overflow-hidden min-h-screen flex items-center justify-center bg-[#fdfbf7]">
             {/* Animated DNA Background */}
             <DNABackground />
 
@@ -22,18 +22,18 @@ export default function HeroSection() {
 
             <div className="max-w-5xl mx-auto text-center relative z-10">
                 {/* Badge */}
-                <div className="animate-fade-in-up inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/70 border-2 border-black mb-8 backdrop-blur-sm shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <div className="animate-fade-in-up inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/70 border-2 border-black mb-4 backdrop-blur-sm shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                     <span className="w-2.5 h-2.5 rounded-full bg-retro-accent-green cursor-blink" />
                     <span className="text-xs font-bold text-black uppercase tracking-widest font-mono">Decentralized Healthcare Intelligence</span>
                 </div>
 
                 {/* Title */}
-                <h1 className="animate-fade-in-up delay-200 text-6xl md:text-8xl font-black leading-tight mb-6 drop-shadow-sm mix-blend-multiply text-black">
+                <h1 className="animate-fade-in-up delay-200 text-6xl md:text-7xl font-black leading-tight mb-3 drop-shadow-sm mix-blend-multiply text-black">
                     ClearPulse AI
                 </h1>
 
                 {/* Typewriter */}
-                <div className="animate-fade-in-up delay-400 text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto mb-8 font-bold font-mono h-20 flex items-center justify-center">
+                <div className="animate-fade-in-up delay-400 text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto mb-4 font-bold font-mono h-14 flex items-center justify-center">
                     <Typewriter
                         text={[
                             "AI-powered medical analysis secured by blockchain.",
@@ -46,23 +46,23 @@ export default function HeroSection() {
                 </div>
 
                 {/* Description */}
-                <p className="animate-fade-in-up delay-500 text-base text-gray-600 max-w-lg mx-auto mb-14 leading-relaxed">
+                <p className="animate-fade-in-up delay-500 text-base text-gray-600 max-w-lg mx-auto mb-6 leading-relaxed">
                     Upload medical reports, get instant AI analysis with risk scores, chat with an AI health assistant, and watch personalized video explanations — all with patient-controlled access on-chain.
                 </p>
 
                 {/* Who Are You? - Two Doors */}
-                <div className="max-w-3xl mx-auto animate-fade-in-up delay-700 mt-4">
-                    <h2 className="text-sm font-bold text-black uppercase tracking-[0.2em] mb-8 font-mono">
+                <div className="max-w-3xl mx-auto animate-fade-in-up delay-700 mt-0">
+                    <h2 className="text-sm font-bold text-black uppercase tracking-[0.2em] mb-4 font-mono">
                         <span className="border-b-3 border-black pb-1">Select Your Role</span>
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         {/* Patient Card */}
-                        <Link href="/patient" className="group retro-card p-8 text-center cursor-pointer relative hover:-translate-y-2 transition-all duration-300 bg-white/95 backdrop-blur-sm glow-pink">
-                            <div className="w-20 h-20 border-2 border-black bg-retro-accent-pink mx-auto mb-5 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                                <Heart className="w-9 h-9 text-black" strokeWidth={2.5} />
+                        <Link href="/patient" className="group retro-card p-5 text-center cursor-pointer relative hover:-translate-y-2 transition-all duration-300 bg-white/95 backdrop-blur-sm glow-pink">
+                            <div className="w-14 h-14 border-2 border-black bg-retro-accent-pink mx-auto mb-3 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                <Heart className="w-7 h-7 text-black" strokeWidth={2.5} />
                             </div>
-                            <h3 className="text-2xl font-serif font-bold text-black mb-2">Patient</h3>
-                            <p className="text-sm text-gray-700 font-medium leading-relaxed mb-6">
+                            <h3 className="text-xl font-serif font-bold text-black mb-1">Patient</h3>
+                            <p className="text-sm text-gray-700 font-medium leading-relaxed mb-4">
                                 Upload reports, get AI analysis, talk to AI doctor, and control who sees your data.
                             </p>
                             <span className="inline-flex items-center gap-2 text-sm text-black font-bold uppercase border-b-2 border-black group-hover:bg-retro-accent-yellow/50 transition-colors px-2 py-1">
@@ -71,12 +71,12 @@ export default function HeroSection() {
                         </Link>
 
                         {/* Doctor Card */}
-                        <Link href="/doctor" className="group retro-card p-8 text-center cursor-pointer relative hover:-translate-y-2 transition-all duration-300 bg-white/95 backdrop-blur-sm glow-green">
-                            <div className="w-20 h-20 border-2 border-black bg-retro-accent-green mx-auto mb-5 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
-                                <Stethoscope className="w-9 h-9 text-black" strokeWidth={2.5} />
+                        <Link href="/doctor" className="group retro-card p-5 text-center cursor-pointer relative hover:-translate-y-2 transition-all duration-300 bg-white/95 backdrop-blur-sm glow-green">
+                            <div className="w-14 h-14 border-2 border-black bg-retro-accent-green mx-auto mb-3 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
+                                <Stethoscope className="w-7 h-7 text-black" strokeWidth={2.5} />
                             </div>
-                            <h3 className="text-2xl font-serif font-bold text-black mb-2">Doctor</h3>
-                            <p className="text-sm text-gray-700 font-medium leading-relaxed mb-6">
+                            <h3 className="text-xl font-serif font-bold text-black mb-1">Doctor</h3>
+                            <p className="text-sm text-gray-700 font-medium leading-relaxed mb-4">
                                 View patient records shared with you and review AI-generated analysis.
                             </p>
                             <span className="inline-flex items-center gap-2 text-sm text-black font-bold uppercase border-b-2 border-black group-hover:bg-retro-accent-yellow/50 transition-colors px-2 py-1">
