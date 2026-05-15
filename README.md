@@ -612,4 +612,4 @@ ClearPulse/
 
 ---
 
-> **Built for HackaLeague** — *Decentralized. Intelligent. Patient-first.*
+> **Built with ClearPulse** — *Decentralized. Intelligent. Patient-first.*
