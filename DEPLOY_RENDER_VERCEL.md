@@ -90,7 +90,7 @@ VAULT_MASTER_KEY=generate_random_32_character_string
 SECRET_KEY=generate_random_secret_string
 
 # CORS - We'll update this after deploying frontend
-ALLOWED_ORIGINS=https://clearpulse.vercel.app
+ALLOWED_ORIGINS=https://clear-pulse-ki1d.vercel.app
 
 # Environment
 ENVIRONMENT=production
@@ -170,7 +170,7 @@ NEXT_PUBLIC_STUDY_REGISTRY_ADDRESS=0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
 1. Click **"Deploy"**
 2. Wait for build (2-3 minutes)
 3. Once deployed, you'll see: **"Congratulations! 🎉"**
-4. **Copy your frontend URL** (e.g., `https://clearpulse.vercel.app`)
+4. **Copy your frontend URL** (e.g., `https://clear-pulse-ki1d.vercel.app`)
 
 ---
 
@@ -187,7 +187,7 @@ Now that you have your frontend URL, update the backend CORS:
 5. Update it with your Vercel URL:
 
 ```bash
-ALLOWED_ORIGINS=https://clearpulse.vercel.app,https://clearpulse-git-main.vercel.app
+ALLOWED_ORIGINS=https://clear-pulse-ki1d.vercel.app,https://clearpulse-git-main.vercel.app
 ```
 
 **Note:** Include both the production URL and the git branch URL for preview deployments.
@@ -201,7 +201,7 @@ ALLOWED_ORIGINS=https://clearpulse.vercel.app,https://clearpulse-git-main.vercel
 
 #### 4.1 Test Frontend
 
-1. Open your Vercel URL: `https://clearpulse.vercel.app`
+1. Open your Vercel URL: `https://clear-pulse-ki1d.vercel.app`
 2. You should see the landing page
 3. Click **"Patient"** button
 4. Should load the patient dashboard ✅
@@ -225,7 +225,7 @@ ALLOWED_ORIGINS=https://clearpulse.vercel.app,https://clearpulse-git-main.vercel
 ## ✅ Deployment Complete!
 
 Your app is now live at:
-- **Frontend:** `https://clearpulse.vercel.app`
+- **Frontend:** `https://clear-pulse-ki1d.vercel.app`
 - **Backend:** `https://clearpulse-backend.onrender.com`
 
 ---
@@ -365,7 +365,7 @@ curl https://clearpulse-backend.onrender.com/health
 1. Go to Render → Environment
 2. Update `ALLOWED_ORIGINS`:
    ```bash
-   ALLOWED_ORIGINS=https://clearpulse.vercel.app,https://clearpulse-git-main.vercel.app
+   ALLOWED_ORIGINS=https://clear-pulse-ki1d.vercel.app,https://clearpulse-git-main.vercel.app
    ```
 3. Save (auto-redeploys)
 
@@ -659,7 +659,7 @@ Before going live:
 
 **Your app is now deployed and accessible worldwide!**
 
-- **Frontend:** https://clearpulse.vercel.app
+- **Frontend:** https://clear-pulse-ki1d.vercel.app
 - **Backend:** https://clearpulse-backend.onrender.com
 
 **Next Steps:**

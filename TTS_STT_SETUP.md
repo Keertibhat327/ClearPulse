@@ -203,7 +203,7 @@ Response:
 
 1. **Add the API keys to Render** (see instructions above)
 2. **Wait for Render to redeploy** (1-2 minutes)
-3. **Test the voice features** on your live site: https://clear-pulse.vercel.app
+3. **Test the voice features** on your live site: https://clear-pulse-ki1d.vercel.app
 4. **Try different languages** using the language selector
 
 ---

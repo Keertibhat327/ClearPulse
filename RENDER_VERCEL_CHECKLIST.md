@@ -57,7 +57,7 @@ Quick reference checklist for deploying ClearPulse to Render and Vercel.
 - [ ] `PINATA_GATEWAY` = `https://gateway.pinata.cloud/ipfs`
 - [ ] `VAULT_MASTER_KEY` = generate random 32 chars
 - [ ] `SECRET_KEY` = generate random string
-- [ ] `ALLOWED_ORIGINS` = `https://clearpulse.vercel.app`
+- [ ] `ALLOWED_ORIGINS` = `https://clear-pulse-ki1d.vercel.app`
 - [ ] `ENVIRONMENT` = `production`
 - [ ] `DEBUG` = `false`
 
@@ -99,7 +99,7 @@ Quick reference checklist for deploying ClearPulse to Render and Vercel.
 
 - [ ] Click "Deploy"
 - [ ] Wait for build (2-3 minutes)
-- [ ] Copy frontend URL (e.g., `https://clearpulse.vercel.app`)
+- [ ] Copy frontend URL (e.g., `https://clear-pulse-ki1d.vercel.app`)
 - [ ] Open URL in browser
 - [ ] Landing page should load
 
@@ -113,7 +113,7 @@ Quick reference checklist for deploying ClearPulse to Render and Vercel.
 - [ ] Click on `clearpulse-backend` service
 - [ ] Go to "Environment" tab
 - [ ] Find `ALLOWED_ORIGINS` variable
-- [ ] Update to: `https://clearpulse.vercel.app,https://clearpulse-git-main.vercel.app`
+- [ ] Update to: `https://clear-pulse-ki1d.vercel.app,https://clearpulse-git-main.vercel.app`
 - [ ] Click "Save Changes"
 - [ ] Wait for auto-redeploy (1-2 minutes)
 
@@ -268,7 +268,7 @@ Quick reference checklist for deploying ClearPulse to Render and Vercel.
 ## 🎉 Deployment Complete!
 
 **Your app is live at:**
-- Frontend: `https://clearpulse.vercel.app`
+- Frontend: `https://clear-pulse-ki1d.vercel.app`
 - Backend: `https://clearpulse-backend.onrender.com`
 
 **Time taken:** ~20 minutes  

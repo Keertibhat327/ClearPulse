@@ -75,7 +75,7 @@ NEXT_PUBLIC_API_URL=https://your-backend.railway.app
 
 6. Click **"Deploy"**
 7. Wait for deployment to complete
-8. **Copy your frontend URL** (e.g., `https://clearpulse.vercel.app`)
+8. **Copy your frontend URL** (e.g., `https://clear-pulse-ki1d.vercel.app`)
 
 ---
 
@@ -87,7 +87,7 @@ NEXT_PUBLIC_API_URL=https://your-backend.railway.app
 4. Update `ALLOWED_ORIGINS`:
 
 ```bash
-ALLOWED_ORIGINS=https://clearpulse.vercel.app,https://www.clearpulse.vercel.app
+ALLOWED_ORIGINS=https://clear-pulse-ki1d.vercel.app,https://www.clear-pulse-ki1d.vercel.app
 ```
 
 5. Save (Railway will auto-redeploy)
@@ -96,7 +96,7 @@ ALLOWED_ORIGINS=https://clearpulse.vercel.app,https://www.clearpulse.vercel.app
 
 ## ✅ Test Your Deployment
 
-1. **Visit your frontend URL**: `https://clearpulse.vercel.app`
+1. **Visit your frontend URL**: `https://clear-pulse-ki1d.vercel.app`
 2. **Click "Patient"** → Should load patient dashboard
 3. **Upload a test PDF** → Should analyze successfully
 4. **Try the chatbot** → Should respond

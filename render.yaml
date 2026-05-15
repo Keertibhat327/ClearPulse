@@ -56,7 +56,7 @@ services:
       
       # CORS - Update after deploying frontend
       - key: ALLOWED_ORIGINS
-        value: https://clearpulse.vercel.app
+        value: https://clear-pulse-ki1d.vercel.app
       
       # Environment
       - key: ENVIRONMENT
