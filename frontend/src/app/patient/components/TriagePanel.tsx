@@ -59,7 +59,7 @@ export default function TriagePanel({ patientId }: TriagePanelProps) {
     const [isRecording, setIsRecording] = useState(false);
     const [ttsEnabled, setTtsEnabled] = useState(false);
     const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-    const [sarvamAvailable, setSarvamAvailable] = useState<boolean | null>(null);
+    const [sarvamAvailable, setSarvamAvailable] = useState<boolean | null>(true); // Optimistic default
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
