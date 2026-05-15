@@ -59,7 +59,7 @@ def _fallback_analysis_from_text(file_bytes: bytes, file_type: str) -> dict:
 
 async def _generate_analysis_with_retries(client, prompt: str, file_bytes: bytes, file_type: str):
     # Updated to valid model names and fewer retries to fail over faster
-    models = ["gemini-2.0-flash", "gemini-1.5-flash"]
+    models = ["gemini-2.5-flash", "gemini-2.0-flash"]
     last_error = None
 
     for model in models:

@@ -1,8 +1,5 @@
 import os
-from dotenv import load_dotenv
 from google import genai
-
-load_dotenv(override=True)
 
 
 class _ModelWrapper:
@@ -20,10 +17,10 @@ class _ModelWrapper:
 
 
 def get_gemini_client() -> genai.Client:
-    """Return a configured genai.Client for advanced use (chat, multimodal, etc.)."""
-    api_key = os.getenv("GOOGLE_API_KEY")
+    """Return a configured genai.Client. Accepts GOOGLE_API_KEY or GEMINI_API_KEY."""
+    api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        raise RuntimeError("GOOGLE_API_KEY is not set in .env")
+        raise RuntimeError("Neither GOOGLE_API_KEY nor GEMINI_API_KEY is set in environment")
     return genai.Client(api_key=api_key)
 
 
