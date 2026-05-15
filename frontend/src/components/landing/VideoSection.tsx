@@ -38,7 +38,7 @@ export default function VideoSection() {
                     </span>
                 </h2>
                 <p className="text-lg md:text-xl text-gray-300 mb-12 font-medium max-w-2xl mx-auto leading-relaxed">
-                    Experience a new era where AI meets Blockchain. Secure, intelligent, and completely in your control.
+                    Experience a new era where AI meets Healthcare. Secure, intelligent, and completely in your control.
                 </p>
                 <Link
                     href="/register"
